@@ -11,6 +11,7 @@ Kaggle competiton https://www.kaggle.com/c/digit-recognizer/leaderboard
 
 #### Content
 * Math
+* Train
 * Weight initialization
 * Loss functions
 * Layer
@@ -114,6 +115,23 @@ In stochastic gradient descent we don't want to wait all inputs proceed to make 
         m.layers.forEach(layer -> layer.onBatchFinished(trainMiniBatch.size));
     } 
 ```
+##### Weight Initializers
+```java
+public interface WeightInitializer extends Serializable {
+    double[][] init(int x, int y);
+}
+```
+###### Gaussian
+```java
+    private final double limit;
+    private final Random random = new Random();
+    
+    @Override
+    public double[][] init(int x, int y) {
+        double[][] vals = new double[x][y];
+        return M.FR(v -> limit * random.nextGaussian(), vals);
+    }
+```
 ##### Loss functions
 ```java
 public interface CostFunction extends Serializable {
@@ -141,7 +159,31 @@ public class MSE implements CostFunction {
         return M.minusR(activations, y);
     }
 }
- ```   
+ ``` 
+ 
+##### Activation Function
+```java
+public interface ActivationFunction extends Serializable {
+    double[] activate(double[] values);
+    double[] dADz(double[] z);
+}
+```
+###### Sigmoid
+```java
+    @Override
+    public double[] activate(double[] z) {
+        return M.FR(this::sigmoid, z);
+    }
+    @Override
+    public double[] dADz(double[] z) {
+        return M.FR(v -> sigmoid(v) * (1 - sigmoid(v)), z);
+    }
+    private double sigmoid(double v) {
+        return 1.0 / (1.0 + Math.exp(-v));
+    }
+```
+
+  
 ##### With default settings:
 From `MNISTest.learnWithDefaultSettings`
 ```java
