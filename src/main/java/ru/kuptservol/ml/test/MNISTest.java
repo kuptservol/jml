@@ -10,8 +10,11 @@ import org.slf4j.LoggerFactory;
 import ru.kuptservol.ml.data.DataSet;
 import ru.kuptservol.ml.data.DataSets;
 import ru.kuptservol.ml.matrix.M;
+import ru.kuptservol.ml.metric.Metrics;
 import ru.kuptservol.ml.model.Model;
 import ru.kuptservol.ml.model.Models;
+import ru.kuptservol.ml.result.function.ResultFunctions;
+import ru.kuptservol.ml.train.Trainers;
 import ru.kuptservol.ml.train.listener.LogListener;
 
 /**
@@ -23,20 +26,20 @@ public class MNISTest {
     @Test
     public void learnWithDefaultSettings() throws IOException, ClassNotFoundException {
         DataSet mnist = DataSets.MNIST(Paths.get("/tmp/mnist"));
-//
-//        Model model = Models.linear(784, 30, 10)
-//                .trainer(Trainers.SGD(100, 100).build())
-//                .resultFunction(ResultFunctions.MAX_INDEX)
-//                .metrics(Metrics.ACCURACY)
-//                .build();
-//
-//        logger.debug("Accuracy before learn: " + Metrics.ACCURACY.execute(model, mnist.train.x, mnist.train.y).print());
-//
-//        model.train(mnist);
 
-        Path path = Paths.get("/tmp/mnist_model");
+        Model model = Models.linear(784, 30, 10)
+                .trainer(Trainers.SGD(100, 100).build())
+                .resultFunction(ResultFunctions.MAX_INDEX)
+                .metrics(Metrics.ACCURACY)
+                .build();
 
-//        model.save(path);
+        logger.debug("Accuracy before learn: " + Metrics.ACCURACY.execute(model, mnist.train.x, mnist.train.y).print());
+
+        model.train(mnist);
+
+        Path path = Paths.get("/tmp/mnist_model_with_defaults");
+
+        model.save(path);
         Model modelLoaded = Models.load(path);
 
         logger.debug("X0: " + M.asPixels(M.to(mnist.train.x[1], 28, 28)));
