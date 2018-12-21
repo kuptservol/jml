@@ -170,6 +170,18 @@ public interface Layer extends Serializable {
 }
  ```
  ###### Linear
+Forward: <a href="https://www.codecogs.com/eqnedit.php?latex=\textup{a}{_{j}}^{l}&space;=&space;\sigma&space;(\sum&space;_k\textup{w}{_{jk}}^{l}&space;\textup{a}{_{k}}^{l-1}&space;&plus;&space;\textup{b}{_{j}}^{l})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\textup{a}{_{j}}^{l}&space;=&space;\sigma&space;(\sum&space;_k\textup{w}{_{jk}}^{l}&space;\textup{a}{_{k}}^{l-1}&space;&plus;&space;\textup{b}{_{j}}^{l})" title="\textup{a}{_{j}}^{l} = \sigma (\sum _k\textup{w}{_{jk}}^{l} \textup{a}{_{k}}^{l-1} + \textup{b}{_{j}}^{l})" /></a>
+
+ 
+Derivative:
+
+By w:
+<a href="https://www.codecogs.com/eqnedit.php?latex=\frac{\partial&space;CostF}{\partial&space;w_{l}}&space;=&space;\frac{\partial&space;CostF}{\partial&space;a_{l&plus;1}}&space;*&space;w_{l&plus;1}*&space;(\sigma(z_l))'&space;*&space;a_{l-1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{\partial&space;CostF}{\partial&space;w_{l}}&space;=&space;\frac{\partial&space;CostF}{\partial&space;a_{l&plus;1}}&space;*&space;w_{l&plus;1}*&space;(\sigma(z_l))'&space;*&space;a_{l-1}" title="\frac{\partial CostF}{\partial w_{l}} = \frac{\partial CostF}{\partial a_{l+1}} * w_{l+1}* (\sigma(z_l))' * a_{l-1}" /></a>
+
+By b:
+<a href="https://www.codecogs.com/eqnedit.php?latex=\frac{\partial&space;CostF}{\partial&space;b_{l}}&space;=&space;\frac{\partial&space;CostF}{\partial&space;a_{l&plus;1}}&space;*&space;w_{l&plus;1}*&space;(\sigma(z_l))'" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{\partial&space;CostF}{\partial&space;b_{l}}&space;=&space;\frac{\partial&space;CostF}{\partial&space;a_{l&plus;1}}&space;*&space;w_{l&plus;1}*&space;(\sigma(z_l))'" title="\frac{\partial CostF}{\partial b_{l}} = \frac{\partial CostF}{\partial a_{l+1}} * w_{l+1}* (\sigma(z_l))'" /></a>
+
+
  ```java
     @Override
     public double[] forward(double[] inputActivations) {
