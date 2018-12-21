@@ -160,7 +160,62 @@ public class MSE implements CostFunction {
     }
 }
  ``` 
- 
+ ##### Layer
+ ```java
+public interface Layer extends Serializable {
+    double[] forward(double[] prevActivations);
+    double[] backprop(double[] dCostDaNextLayer);
+    void onBatchStarted();
+    void onBatchFinished(int batchSize);
+}
+ ```
+ ###### Linear
+ ```java
+    @Override
+    public double[] forward(double[] inputActivations) {
+        prevLayerActivations = inputActivations;
+
+        /* z = Wx + b
+         * a = actv(z)
+         */
+        z = M.plusR(
+                M.dotR(inputActivations, weights),
+                biases
+        );
+
+        return activationFunction.activate(z);
+    }
+
+    /**
+     * @param dCostDaWNextLayer = W(l+1)*dC/dA(l+1)
+     */
+    @Override
+    public double[] backprop(double[] dCostDaWNextLayer) {
+        /* dC/da */
+        double[] dCostDa = M.hadamartR(dCostDaWNextLayer, activationFunction.dADz(z));
+        /* dC/db */
+        double[] dCDb = dCostDa;
+        /* dC/dw */
+        double[][] dCDw = M.dotR(prevLayerActivations, dCostDa);
+
+        M.plus(deltaBiases, dCDb);
+        M.plus(deltaWeights, dCDw);
+
+        return M.dotR(weights, dCostDa);
+    }
+
+    @Override
+    public void onBatchStarted() {
+        deltaWeights = new double[in][out];
+        deltaBiases = new double[out];
+    }
+
+    @Override
+    public void onBatchFinished(int batchSize) {
+        M.F(weights, deltaWeights, (w, dw) -> w - dw * (learningRate / batchSize));
+        M.F(biases, deltaBiases, (b, db) -> b - db * (learningRate / batchSize));
+    }
+ ```
 ##### Activation Function
 ```java
 public interface ActivationFunction extends Serializable {
