@@ -12,12 +12,12 @@ Kaggle competiton https://www.kaggle.com/c/digit-recognizer/leaderboard
 #### Content
 * [Math](./docs/math.md)
 * [Train](./docs/train.md)
-* [Weight initialization](./docs/train.md)
-* Loss functions
-* Layer
-* Activation Function
-* Training
-* Optimization
+* [Weight initializations](./docs/weight_initializer.md)
+* [Loss functions](./docs/loss_function.md)
+* [Layers](./docs/layer.md)
+* [Activation Functions](./docs/activation_function.md)
+* [Training Methods](./docs/train.md)
+* [Optimization](./docs/optimization.md)
   
 ##### With default settings:
 From `MNISTest.learnWithDefaultSettings`
