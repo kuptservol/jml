@@ -19,7 +19,7 @@ public class ModelTest {
     public void saveAndLoad() throws IOException, ClassNotFoundException {
         Model model = Models.linear(0.1, 784, 30, 10)
                 .resultFunction(ResultFunctions.MAX_INDEX)
-                .metrics(Metrics.ACCURACY)
+                .metrics(Metrics.ACCURACY.build())
                 .build();
 
         Path path = Paths.get("/tmp/model1");

@@ -2,7 +2,7 @@ package ru.kuptservol.ml.cost.function;
 
 import java.io.Serializable;
 
-import ru.kuptservol.ml.metric.MetricsResult;
+import ru.kuptservol.ml.metric.result.MetricsResult;
 import ru.kuptservol.ml.model.Model;
 
 /**

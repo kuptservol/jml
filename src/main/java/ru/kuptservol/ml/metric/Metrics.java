@@ -5,5 +5,5 @@ package ru.kuptservol.ml.metric;
  */
 public class Metrics {
 
-    public final static Accuracy ACCURACY = new Accuracy();
+    public final static Accuracy.AccuracyBuilder ACCURACY = new Accuracy.AccuracyBuilder();
 }

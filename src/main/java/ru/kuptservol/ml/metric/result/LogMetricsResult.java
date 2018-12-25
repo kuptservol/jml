@@ -1,19 +1,21 @@
-package ru.kuptservol.ml.metric;
+package ru.kuptservol.ml.metric.result;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 
 /**
  * @author Sergey Kuptsov
  */
-@Builder
 @AllArgsConstructor
-public class SimpleMetricsResult implements MetricsResult {
+public class LogMetricsResult implements MetricsResult {
     public double value;
     public String pattern;
 
     @Override
     public String print() {
         return String.format(pattern, value);
+    }
+
+    public MetricsResult create(double cost, String pattern) {
+        return new LogMetricsResult(cost, pattern);
     }
 }

@@ -390,15 +390,25 @@ public class M {
 
 
     public static String asPixels(double[][] pixels) {
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < pixels.length; i++) {
-            for (int j = 0; j < pixels[i].length; j++) {
-                s.append(pixels[i][j] > 0 ? "*" : " ");
+        StringBuilder sb = new StringBuilder();
+
+        for (int row = 0; row < pixels.length; row++) {
+            sb.append("|");
+            for (int col = 0; col < pixels[row].length; col++) {
+                double pixelVal = pixels[row][col];
+                if (pixelVal == 0)
+                    sb.append(" ");
+                else if (pixelVal < 256 / 3.0)
+                    sb.append(".");
+                else if (pixelVal < 2 * (256 / 3.0))
+                    sb.append("x");
+                else
+                    sb.append("X");
             }
-            s.append(System.lineSeparator());
+            sb.append("|\n");
         }
 
-        return s.toString();
+        return sb.toString();
     }
 
     public static double[][] to(double[] a, int row, int col) {

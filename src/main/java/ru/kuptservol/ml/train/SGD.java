@@ -2,14 +2,14 @@ package ru.kuptservol.ml.train;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import ru.kuptservol.ml.cost.function.CostFunction;
 import ru.kuptservol.ml.data.DataSet;
 import ru.kuptservol.ml.layer.Layer;
 import ru.kuptservol.ml.matrix.M;
-import ru.kuptservol.ml.metric.MetricsResult;
+import ru.kuptservol.ml.metric.result.MetricsResult;
 import ru.kuptservol.ml.model.Model;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 
 /**
  * @author Sergey Kuptsov
@@ -56,7 +56,7 @@ public class SGD implements Trainer {
 
             m.trainListener.onEpochFinished(i, trainMetrics, testMetrics, costMetrics);
         }
-        m.trainListener.onTrainFinished();
+        m.trainListener.onTrainFinished(m);
     }
 
     private void trainOnMiniBatch(M.Data trainMiniBatch, Model m, int batchId) {

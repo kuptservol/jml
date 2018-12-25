@@ -2,6 +2,7 @@ package ru.kuptservol.ml.metric;
 
 import java.io.Serializable;
 
+import ru.kuptservol.ml.metric.result.MetricsResult;
 import ru.kuptservol.ml.model.Model;
 
 /**

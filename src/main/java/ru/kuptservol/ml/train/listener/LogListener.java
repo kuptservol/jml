@@ -1,11 +1,15 @@
 package ru.kuptservol.ml.train.listener;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.kuptservol.ml.metric.MetricsResult;
+import ru.kuptservol.ml.metric.result.MetricsResult;
+import ru.kuptservol.ml.model.Model;
 
 /**
  * @author Sergey Kuptsov
@@ -40,7 +44,7 @@ public class LogListener implements TrainListener {
     }
 
     @Override
-    public void onTrainFinished() {
+    public void onTrainFinished(Model m) {
         logger.info("Train finished");
     }
 }

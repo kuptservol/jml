@@ -98,33 +98,4 @@ public class MnistReader {
         }
     }
 
-    public static String renderImage(int[][] image) {
-        StringBuffer sb = new StringBuffer();
-
-        for (int row = 0; row < image.length; row++) {
-            sb.append("|");
-            for (int col = 0; col < image[row].length; col++) {
-                int pixelVal = image[row][col];
-                if (pixelVal == 0)
-                    sb.append(" ");
-                else if (pixelVal < 256 / 3)
-                    sb.append(".");
-                else if (pixelVal < 2 * (256 / 3))
-                    sb.append("x");
-                else
-                    sb.append("X");
-            }
-            sb.append("|\n");
-        }
-
-        return sb.toString();
-    }
-
-    public static String repeat(String s, int n) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            sb.append(s);
-        }
-        return sb.toString();
-    }
 }

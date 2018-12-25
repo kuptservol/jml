@@ -5,5 +5,7 @@ package ru.kuptservol.ml.cost.function;
  */
 public class CostFunctions {
 
-    public static MSE MSE = new MSE();
+    public static MSE.MSEBuilder MSE = new MSE.MSEBuilder();
+
+    public static CrossEntropy CROSS_ENTROPY = new CrossEntropy();
 }

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Path;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import ru.kuptservol.ml.cost.function.CostFunction;
 import ru.kuptservol.ml.cost.function.CostFunctions;
 import ru.kuptservol.ml.data.DataSet;
@@ -15,9 +18,6 @@ import ru.kuptservol.ml.train.SGD;
 import ru.kuptservol.ml.train.Trainer;
 import ru.kuptservol.ml.train.listener.TrainListener;
 import ru.kuptservol.ml.train.listener.TrainListeners;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
 
 /**
  * @author Sergey Kuptsov
@@ -40,7 +40,7 @@ public class Model implements Serializable {
     @Builder.Default
     public TrainListener trainListener = TrainListeners.LOG_LISTENER;
     @Builder.Default
-    public CostFunction costFunction = CostFunctions.MSE;
+    public CostFunction costFunction = CostFunctions.MSE.build();
     @Builder.Default
     public Metric metrics;
     @Builder.Default
