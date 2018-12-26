@@ -2,7 +2,7 @@ package ru.kuptservol.ml.cost.function;
 
 import java.io.Serializable;
 
-import ru.kuptservol.ml.metric.result.MetricsResult;
+import ru.kuptservol.ml.metric.result.Metric;
 import ru.kuptservol.ml.model.Model;
 
 /**
@@ -10,7 +10,10 @@ import ru.kuptservol.ml.model.Model;
  */
 public interface CostFunction extends Serializable {
 
-    MetricsResult execute(Model m, double[][] trainX, double[][] trainY);
+    Metric cost(Model m, double[][] trainX, double[][] trainY);
 
+    /**
+     * return Dcost/dA
+     */
     double[] backprop(double[] activations, double[] y);
 }

@@ -2,7 +2,6 @@ package ru.kuptservol.ml.metric;
 
 import java.io.Serializable;
 
-import ru.kuptservol.ml.metric.result.MetricsResult;
 import ru.kuptservol.ml.model.Model;
 
 /**
@@ -10,5 +9,5 @@ import ru.kuptservol.ml.model.Model;
  */
 public interface Metric extends Serializable {
 
-    MetricsResult execute(Model m, double[][] X, double[][] Y);
+    ru.kuptservol.ml.metric.result.Metric execute(Model m, double[][] X, double[][] Y);
 }

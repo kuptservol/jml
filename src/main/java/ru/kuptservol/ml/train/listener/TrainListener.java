@@ -2,9 +2,8 @@ package ru.kuptservol.ml.train.listener;
 
 import java.io.Serializable;
 import java.util.Optional;
-import java.util.function.Consumer;
 
-import ru.kuptservol.ml.metric.result.MetricsResult;
+import ru.kuptservol.ml.metric.result.Metric;
 import ru.kuptservol.ml.model.Model;
 
 /**
@@ -13,7 +12,7 @@ import ru.kuptservol.ml.model.Model;
 public interface TrainListener extends Serializable {
     void onEpochStarted(int epochId);
 
-    void onEpochFinished(int epochId, Optional<MetricsResult> trainMetrics, Optional<MetricsResult> testMetrics, MetricsResult costMetrics);
+    void onEpochFinished(int epochId, Optional<Metric> trainMetrics, Optional<Metric> testMetrics, Metric costMetrics);
 
     void onBatchStarted(int batchId);
 

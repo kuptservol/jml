@@ -8,7 +8,7 @@ import ru.kuptservol.ml.cost.function.CostFunction;
 import ru.kuptservol.ml.data.DataSet;
 import ru.kuptservol.ml.layer.Layer;
 import ru.kuptservol.ml.matrix.M;
-import ru.kuptservol.ml.metric.result.MetricsResult;
+import ru.kuptservol.ml.metric.result.Metric;
 import ru.kuptservol.ml.model.Model;
 
 /**
@@ -44,15 +44,15 @@ public class SGD implements Trainer {
                 trainOnMiniBatch(miniBatch, m, j);
             }
 
-            Optional<MetricsResult> trainMetrics = Optional.ofNullable(m.metrics).map(metrics -> metrics.execute(m, trainX, trainY));
-            Optional<MetricsResult> testMetrics = Optional.empty();
+            Optional<Metric> trainMetrics = Optional.ofNullable(m.metrics).map(metrics -> metrics.execute(m, trainX, trainY));
+            Optional<Metric> testMetrics = Optional.empty();
             if (dataSet.test.isPresent()) {
                 if (Optional.ofNullable(m.metrics).isPresent()) {
                     testMetrics = Optional.ofNullable(m.metrics).map(metrics -> metrics.execute(m, dataSet.test.get().x, dataSet.test.get().y));
                 }
             }
 
-            MetricsResult costMetrics = m.costFunction.execute(m, trainX, trainY);
+            Metric costMetrics = m.costFunction.cost(m, trainX, trainY);
 
             m.trainListener.onEpochFinished(i, trainMetrics, testMetrics, costMetrics);
         }

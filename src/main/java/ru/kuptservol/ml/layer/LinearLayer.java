@@ -67,16 +67,16 @@ public class LinearLayer implements Layer {
     @Override
     public double[] backprop(double[] dCostDaWNextLayer) {
         /* dC/da */
-        double[] dCostDa = M.hadamartR(dCostDaWNextLayer, activationFunction.dADz(z));
+        double[] dCDa = M.hadamartR(dCostDaWNextLayer, activationFunction.dADz(z));
         /* dC/db */
-        double[] dCDb = dCostDa;
+        double[] dCDb = dCDa;
         /* dC/dw */
-        double[][] dCDw = M.dotR(prevLayerActivations, dCostDa);
+        double[][] dCDw = M.dotR(prevLayerActivations, dCDa);
 
         M.plus(deltaBiases, dCDb);
         M.plus(deltaWeights, dCDw);
 
-        return M.dotR(weights, dCostDa);
+        return M.dotR(weights, dCDa);
     }
 
     @Override

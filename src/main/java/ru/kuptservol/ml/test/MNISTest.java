@@ -11,12 +11,11 @@ import ru.kuptservol.ml.cost.function.CostFunctions;
 import ru.kuptservol.ml.data.DataSet;
 import ru.kuptservol.ml.data.DataSets;
 import ru.kuptservol.ml.matrix.M;
-import ru.kuptservol.ml.metric.Metrics;
-import ru.kuptservol.ml.metric.result.MetricsResults;
-import ru.kuptservol.ml.metric.result.PlotGraphMetricsResult;
+import ru.kuptservol.ml.metric.result.Metrics;
+import ru.kuptservol.ml.metric.result.PlotGraphMetric;
 import ru.kuptservol.ml.model.Model;
 import ru.kuptservol.ml.model.Models;
-import ru.kuptservol.ml.result.function.ResultFunctions;
+import ru.kuptservol.ml.result.function.OutputFunctions;
 import ru.kuptservol.ml.train.Trainers;
 import ru.kuptservol.ml.train.listener.LogListener;
 
@@ -32,11 +31,11 @@ public class MNISTest {
 
         Model model = Models.linear(784, 30, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultFunction(ResultFunctions.MAX_INDEX)
-                .metrics(Metrics.ACCURACY.build())
+                .resultF(OutputFunctions.MAX_INDEX)
+                .metrics(ru.kuptservol.ml.metric.Metrics.ACCURACY.build())
                 .build();
 
-        logger.debug("Accuracy before learn: " + Metrics.ACCURACY.build().execute(model, mnist.train.x, mnist.train.y).print());
+        logger.debug("Accuracy before learn: " + ru.kuptservol.ml.metric.Metrics.ACCURACY.build().execute(model, mnist.train.x, mnist.train.y).print());
 
         model.train(mnist);
 
@@ -46,21 +45,39 @@ public class MNISTest {
         Model modelLoaded = Models.load(path);
 
         logger.debug("X0: " + M.asPixels(M.to(mnist.train.x[1], 28, 28)));
-        logger.debug("Expected answer: " + modelLoaded.resultFunction.apply(mnist.train.y[1]));
-        logger.debug("Model answer: " + modelLoaded.evaluate(mnist.train.x[1]));
+        logger.debug("Expected answer: " + modelLoaded.resultF.process(mnist.train.y[1]));
+        logger.debug("Model answer: " + modelLoaded.output(mnist.train.x[1]));
     }
 
     @Test
     public void learnWithDefaultSettingsWithCostGraph() throws IOException {
         DataSet mnist = DataSets.MNIST(Paths.get("/tmp/mnist"));
 
-        PlotGraphMetricsResult graph = new PlotGraphMetricsResult();
+        PlotGraphMetric graph = new PlotGraphMetric();
 
         Model model = Models.linear(784, 30, 10)
                 .trainer(Trainers.SGD(100, 3).build())
-                .resultFunction(ResultFunctions.MAX_INDEX)
-                .costFunction(CostFunctions.MSE.metricsResult(MetricsResults.GRAPH_AND_LOG(graph)).build())
-                .metrics(Metrics.ACCURACY.build())
+                .resultF(OutputFunctions.MAX_INDEX)
+                .costFunction(CostFunctions.MSE.metric(Metrics.GRAPH_AND_LOG(graph)).build())
+                .metrics(ru.kuptservol.ml.metric.Metrics.ACCURACY.build())
+                .build();
+
+        model.train(mnist);
+
+        graph.save(Paths.get("/tmp/mnist/cost_graph_res"));
+    }
+
+    @Test
+    public void learnWithCrossEntropy() throws IOException {
+        DataSet mnist = DataSets.MNIST(Paths.get("/tmp/mnist"));
+
+        PlotGraphMetric graph = new PlotGraphMetric();
+
+        Model model = Models.linear(784, 30, 10)
+                .trainer(Trainers.SGD(100, 100).build())
+                .resultF(OutputFunctions.MAX_INDEX)
+                .costFunction(CostFunctions.CROSS_ENTROPY.metrics(Metrics.GRAPH_AND_LOG(graph)).build())
+                .metrics(ru.kuptservol.ml.metric.Metrics.ACCURACY.build())
                 .build();
 
         model.train(mnist);

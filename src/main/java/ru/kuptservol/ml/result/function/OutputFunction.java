@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author Sergey Kuptsov
  */
-public interface ResultFunction extends Serializable {
+public interface OutputFunction extends Serializable {
 
-    double apply(double[] activations);
+    double process(double[] activations);
 }

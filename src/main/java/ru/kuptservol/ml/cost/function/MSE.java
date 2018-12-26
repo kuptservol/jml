@@ -3,8 +3,8 @@ package ru.kuptservol.ml.cost.function;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import ru.kuptservol.ml.matrix.M;
-import ru.kuptservol.ml.metric.result.MetricsResult;
-import ru.kuptservol.ml.metric.result.MetricsResults;
+import ru.kuptservol.ml.metric.result.Metric;
+import ru.kuptservol.ml.metric.result.Metrics;
 import ru.kuptservol.ml.model.Model;
 
 /**
@@ -15,17 +15,17 @@ import ru.kuptservol.ml.model.Model;
 public class MSE implements CostFunction {
 
     @Builder.Default
-    private MetricsResult metricsResult = MetricsResults.LOG;
+    private Metric metric = Metrics.LOG;
 
     @Override
-    public MetricsResult execute(Model m, double[][] X, double[][] Y) {
+    public Metric cost(Model m, double[][] X, double[][] Y) {
         double cost = 0;
 
         for (int i = 0; i < X.length; i++) {
-            cost += Math.pow(m.evaluate(X[i]) - m.resultFunction.apply(Y[i]), 2) / X.length;
+            cost += Math.pow(m.resultF.process(m.forward(X[i])) - m.resultF.process(Y[i]), 2) / X.length;
         }
 
-        return metricsResult.create(cost, "MSE: %.3f");
+        return metric.create(cost, "MSE: %.3f");
     }
 
     @Override

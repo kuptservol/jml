@@ -6,11 +6,11 @@ import java.io.Serializable;
  * @author Sergey Kuptsov
  */
 @FunctionalInterface
-public interface MetricsResult extends Serializable {
+public interface Metric extends Serializable {
 
     default String print() {
         return "";
     }
 
-    MetricsResult create(double cost, String pattern);
+    Metric create(double cost, String pattern);
 }

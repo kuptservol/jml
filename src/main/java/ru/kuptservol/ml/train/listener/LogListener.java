@@ -1,14 +1,11 @@
 package ru.kuptservol.ml.train.listener;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.kuptservol.ml.metric.result.MetricsResult;
+import ru.kuptservol.ml.metric.result.Metric;
 import ru.kuptservol.ml.model.Model;
 
 /**
@@ -22,7 +19,7 @@ public class LogListener implements TrainListener {
     }
 
     @Override
-    public void onEpochFinished(int epochId, Optional<MetricsResult> trainMetrics, Optional<MetricsResult> testMetrics, MetricsResult costMetrics) {
+    public void onEpochFinished(int epochId, Optional<Metric> trainMetrics, Optional<Metric> testMetrics, Metric costMetrics) {
         logger.info("Epoch {} {} {} {}",
                 epochId,
                 trainMetrics.map(tM -> "train " + tM.print()).orElse(""),

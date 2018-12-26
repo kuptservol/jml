@@ -12,8 +12,8 @@ import ru.kuptservol.ml.cost.function.CostFunctions;
 import ru.kuptservol.ml.data.DataSet;
 import ru.kuptservol.ml.layer.Layers;
 import ru.kuptservol.ml.metric.Metric;
-import ru.kuptservol.ml.result.function.ResultFunction;
-import ru.kuptservol.ml.result.function.ResultFunctions;
+import ru.kuptservol.ml.result.function.OutputFunction;
+import ru.kuptservol.ml.result.function.OutputFunctions;
 import ru.kuptservol.ml.train.SGD;
 import ru.kuptservol.ml.train.Trainer;
 import ru.kuptservol.ml.train.listener.TrainListener;
@@ -44,7 +44,7 @@ public class Model implements Serializable {
     @Builder.Default
     public Metric metrics;
     @Builder.Default
-    public ResultFunction resultFunction = ResultFunctions.MAX_VAL;
+    public OutputFunction resultF = OutputFunctions.MAX_VAL;
 
     public void train(double[][] X, double[][] Y) {
         trainer.train(this, X, Y);
@@ -54,8 +54,12 @@ public class Model implements Serializable {
         trainer.train(this, trainX, trainY, testX, testY);
     }
 
-    public double evaluate(double[] x) {
-        return resultFunction.apply(layers.forward(x));
+    public double[] forward(double[] x) {
+        return layers.forward(x);
+    }
+
+    public double output(double[] x) {
+        return resultF.process(forward(x));
     }
 
     public void train(DataSet dataSet) {

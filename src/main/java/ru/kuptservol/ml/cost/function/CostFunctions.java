@@ -7,5 +7,5 @@ public class CostFunctions {
 
     public static MSE.MSEBuilder MSE = new MSE.MSEBuilder();
 
-    public static CrossEntropy CROSS_ENTROPY = new CrossEntropy();
+    public static CrossEntropy.CrossEntropyBuilder CROSS_ENTROPY = new CrossEntropy.CrossEntropyBuilder();
 }

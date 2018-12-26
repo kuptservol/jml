@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Sergey Kuptsov <kuptservol@yandex-team.ru>
  */
-public class PlotGraphMetricsResult implements MetricsResult {
-    private final static Logger logger = LoggerFactory.getLogger(PlotGraphMetricsResult.class);
+public class PlotGraphMetric implements Metric {
+    private final static Logger logger = LoggerFactory.getLogger(PlotGraphMetric.class);
 
     private boolean initialized = false;
 
@@ -54,8 +54,8 @@ public class PlotGraphMetricsResult implements MetricsResult {
     }
 
     @Override
-    public MetricsResult create(double cost, String pattern) {
-        return new PlotGraphMetricsResult();
+    public Metric create(double cost, String pattern) {
+        return new PlotGraphMetric();
     }
 
     private void initialize() {

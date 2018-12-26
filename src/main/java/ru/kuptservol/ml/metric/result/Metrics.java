@@ -3,22 +3,22 @@ package ru.kuptservol.ml.metric.result;
 /**
  * @author Sergey Kuptsov <kuptservol@yandex-team.ru>
  */
-public class MetricsResults {
+public class Metrics {
 
-    public final static MetricsResult LOG = LogMetricsResult::new;
+    public final static Metric LOG = LogMetric::new;
 
-    public static MetricsResult GRAPH(PlotGraphMetricsResult graph) {
+    public static Metric GRAPH(PlotGraphMetric graph) {
         return (cost, pattern) -> {
             graph.addPoint(cost);
             return graph;
         };
     }
 
-    public static MetricsResult GRAPH_AND_LOG(PlotGraphMetricsResult graph) {
+    public static Metric GRAPH_AND_LOG(PlotGraphMetric graph) {
         return (cost, pattern) -> {
             graph.addPoint(cost);
             graph.print();
-            return new LogMetricsResult(cost, pattern);
+            return new LogMetric(cost, pattern);
         };
     }
 }

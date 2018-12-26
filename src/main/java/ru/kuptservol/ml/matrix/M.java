@@ -4,6 +4,8 @@ import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static java.lang.Double.POSITIVE_INFINITY;
+
 /**
  * @author Sergey Kuptsov
  */
@@ -161,6 +163,27 @@ public class M {
         return result;
     }
 
+    public static double ln(double a) {
+        return Math.log1p(a);
+    }
+
+    public static double nanToNum(double a) {
+        if (Double.isFinite(a)) {
+            return a;
+        }
+
+        if (Double.isNaN(a)) {
+            return 0;
+        }
+
+        if (a == POSITIVE_INFINITY) {
+            return Double.MAX_VALUE;
+        }
+
+
+        return Double.MIN_VALUE;
+    }
+
     public static double[] plusR(double[] a, double[] b) {
         checkArraySize(a.length);
         checkArraySize(b.length);
@@ -205,6 +228,21 @@ public class M {
         for (int i = 0; i < a.length; i++) {
             a[i] = bFunc.apply(a[i], b[i]);
         }
+    }
+
+    public static double[] FR(double[] a, double[] b, BiFunction<Double, Double, Double> bFunc) {
+        checkArraySize(a.length);
+        checkArraySize(b.length);
+
+        checkSameLength(a.length, b.length);
+
+        double[] result = new double[a.length];
+
+        for (int i = 0; i < a.length; i++) {
+            result[i] = bFunc.apply(a[i], b[i]);
+        }
+
+        return result;
     }
 
     public static void F(double[][] a, double[][] b, BiFunction<Double, Double, Double> bFunc) {

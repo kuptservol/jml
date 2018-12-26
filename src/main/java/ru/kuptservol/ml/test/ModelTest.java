@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import ru.kuptservol.ml.metric.Metrics;
 import ru.kuptservol.ml.model.Model;
 import ru.kuptservol.ml.model.Models;
-import ru.kuptservol.ml.result.function.ResultFunctions;
+import ru.kuptservol.ml.result.function.OutputFunctions;
 import org.junit.Test;
 
 /**
@@ -18,7 +18,7 @@ public class ModelTest {
     @Test
     public void saveAndLoad() throws IOException, ClassNotFoundException {
         Model model = Models.linear(0.1, 784, 30, 10)
-                .resultFunction(ResultFunctions.MAX_INDEX)
+                .resultF(OutputFunctions.MAX_INDEX)
                 .metrics(Metrics.ACCURACY.build())
                 .build();
 

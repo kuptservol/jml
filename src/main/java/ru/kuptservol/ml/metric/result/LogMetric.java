@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
  * @author Sergey Kuptsov
  */
 @AllArgsConstructor
-public class LogMetricsResult implements MetricsResult {
+public class LogMetric implements Metric {
     public double value;
     public String pattern;
 
@@ -15,7 +15,7 @@ public class LogMetricsResult implements MetricsResult {
         return String.format(pattern, value);
     }
 
-    public MetricsResult create(double cost, String pattern) {
-        return new LogMetricsResult(cost, pattern);
+    public Metric create(double cost, String pattern) {
+        return new LogMetric(cost, pattern);
     }
 }
