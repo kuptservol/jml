@@ -3,6 +3,7 @@ package ru.kuptservol.jml.test;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -118,34 +119,16 @@ public class MNISTest {
     }
 
     @Test
-    public void learnWithCrossEntropy100L2Reg() throws IOException {
+    public void learnWithCrossEntropy100L2RegEarlyStop() throws IOException {
         DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
 
         PlotGraphResultHandler graph = PlotGraphResultHandler
-                .cons(Paths.get("/opt/jml/mnist/graph/learn_cross_entropy_100_neurons_l2_reg.png"));
+                .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop.png"));
 
         Model model = Models.linear(0.01, 784, 100, 10)
                 .trainer(Trainers.SGD(100, 100).build())
                 .resultF(OutputFunctions.MAX_INDEX)
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
-                .build();
-
-        model.train(mnist);
-    }
-
-    @Test
-    public void learnWithCrossEntropyL2RegDropout() throws IOException {
-        DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
-
-        PlotGraphResultHandler graph = PlotGraphResultHandler
-                .cons(Paths.get("./graph/learn_cross_entropy_l2_reg_100_neurons_dropout_0.8.png"));
-
-        Model model = Models.linear(0.01, 0.4, 784, 100, 10)
-                .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
+                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
                 .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
                 .metrics(Metrics.ACCURACY.build())
                 .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))

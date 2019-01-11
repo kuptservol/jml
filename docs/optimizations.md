@@ -26,13 +26,18 @@ In L1 regularization, the weights shrink by a constant amount toward 0. In L2 re
 
 
 ##### Early stopping
+##### Measuring accuracy on validation data sets
+When we set the hyper-parameters based on evaluations of the test_data it's possible we'll end 
+up overfitting our hyper-parameters to the test_data. We may end up finding hyper-parameters which 
+fit particular peculiarities of the test_data, 
+but where the performance of the network won't generalize to other data sets.
+We guard against that by figuring out the hyper-parameters using the validation_data
 ##### Dropout
 Dropout is a technic to delete randomly choosed parts of neurons on every mini-batch step.
 
 When we dropout different sets of neurons, it's rather like we're training different neural networks. 
 And so the dropout procedure is like averaging the effects of a very large number of different networks. 
 The different networks will overfit in different ways, and so, hopefully, the net effect of dropout will be to reduce overfitting.
-
 
    
 ##### Increasing train data size

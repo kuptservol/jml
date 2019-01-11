@@ -22,15 +22,19 @@ public class LogTrainListener implements TrainListener {
     public void onEpochFinished(int epochId,
             Optional<ResultHandler> trainDataMetrics,
             Optional<ResultHandler> testDataMetrics,
+            Optional<ResultHandler> validationDataMetrics,
             ResultHandler trainDataCost,
-            Optional<ResultHandler> testDataCost)
+            Optional<ResultHandler> testDataCost,
+            Optional<ResultHandler> validationDataCost)
     {
-        logger.info("Epoch {} {} {} {} {}",
+        logger.info("Epoch {} {} {} {} {} {} {}",
                 epochId,
                 trainDataMetrics.map(ResultHandler::print).orElse(""),
                 testDataMetrics.map(ResultHandler::print).orElse(""),
+                validationDataMetrics.map(ResultHandler::print).orElse(""),
                 trainDataCost.print(),
-                testDataCost.map(ResultHandler::print).orElse(""));
+                testDataCost.map(ResultHandler::print).orElse(""),
+                validationDataCost.map(ResultHandler::print).orElse(""));
     }
 
     @Override

@@ -15,8 +15,10 @@ public interface TrainListener extends Serializable {
     void onEpochFinished(int epochId,
             Optional<ResultHandler> trainDataMetrics,
             Optional<ResultHandler> testDataMetrics,
+            Optional<ResultHandler> validationDataMetrics,
             ResultHandler trainDataCost,
-            Optional<ResultHandler> testDataCost);
+            Optional<ResultHandler> testDataCost,
+            Optional<ResultHandler> validationDataCost);
 
     void onBatchStarted(int batchId);
 

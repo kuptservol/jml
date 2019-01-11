@@ -3,6 +3,7 @@ package ru.kuptservol.jml.model;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import ru.kuptservol.jml.layer.Layers;
 import ru.kuptservol.jml.metric.Metric;
 import ru.kuptservol.jml.metric.result.ResultHandler;
 import ru.kuptservol.jml.metric.result.ResultHandlers;
+import ru.kuptservol.jml.optimization.EarlyStopping;
 import ru.kuptservol.jml.optimization.Optimizations;
 import ru.kuptservol.jml.optimization.Regularization;
 import ru.kuptservol.jml.result.function.OutputFunction;
@@ -55,6 +57,8 @@ public class Model implements Serializable {
     public ResultHandler costResultHandler = ResultHandlers.LOG;
     @Builder.Default
     public ResultHandler metricResultHandler = ResultHandlers.EMPTY;
+    @Builder.Default
+    public Optional<EarlyStopping> earlyStopO = Optional.empty();
 
     public void train(double[][] X, double[][] Y) {
         trainer.train(this, X, Y);

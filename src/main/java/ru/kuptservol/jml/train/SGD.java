@@ -10,6 +10,7 @@ import ru.kuptservol.jml.layer.Layer;
 import ru.kuptservol.jml.matrix.M;
 import ru.kuptservol.jml.metric.result.ResultHandler;
 import ru.kuptservol.jml.model.Model;
+import ru.kuptservol.jml.optimization.EarlyStopping;
 
 /**
  * @author Sergey Kuptsov
@@ -31,7 +32,7 @@ public class SGD implements Trainer {
         double[][] trainX = dataSet.train.x;
         double[][] trainY = dataSet.train.y;
         m.trainListener.onTrainStarted();
-        for (int i = 0; i < epochs; i++) {
+        for (int i = 0; i < epochs && m.earlyStopO.map(EarlyStopping::doContinue).orElse(true); i++) {
             m.trainListener.onEpochStarted(i);
 
             M.shuffle(trainX, trainY);
@@ -95,11 +96,41 @@ public class SGD implements Trainer {
                     m.costFunction.printFormat()));
         }
 
+        Optional<ResultHandler> validationMetrics = Optional.empty();
+        Optional<ResultHandler> validationDataCost = Optional.empty();
+        if (dataSet.validation.isPresent()) {
+            if (Optional.ofNullable(m.metrics).isPresent()) {
+                validationMetrics = Optional.ofNullable(m.metrics).map(metrics ->
+                        m.metricResultHandler.wrap(
+                                metrics.execute(m, dataSet.validation.get().x, dataSet.validation.get().y),
+                                "validation",
+                                m.metrics.printFormat()));
+            }
+
+            validationDataCost = Optional.of(m.costResultHandler.wrap(
+                    m.costFunction.cost(m, dataSet.validation.get().x, dataSet.validation.get().y),
+                    "validation",
+                    m.costFunction.printFormat()));
+        }
+
         ResultHandler trainDataCost = m.costResultHandler.wrap(
                 m.costFunction.cost(m, dataSet.train.x, dataSet.train.y),
                 "train",
                 m.costFunction.printFormat());
 
-        m.trainListener.onEpochFinished(epoch, trainMetrics, testMetrics, trainDataCost, testDataCost);
+        m.earlyStopO.ifPresent(earlyStop -> {
+                    if (Optional.ofNullable(m.metrics).isPresent()) {
+                        if (dataSet.validation.isPresent())
+                            earlyStop.countSerie(m.metrics.execute(m, dataSet.validation.get().x, dataSet.validation.get().y));
+                        else dataSet.test.ifPresent(data -> earlyStop.countSerie(m.metrics.execute(m, data.x, data.y)));
+                    } else {
+                        if (dataSet.validation.isPresent())
+                            earlyStop.countSerie(1 / m.costFunction.cost(m, dataSet.validation.get().x, dataSet.validation.get().y));
+                        else dataSet.test.ifPresent(data -> earlyStop.countSerie(1 / m.costFunction.cost(m, data.x, data.y)));
+                    }
+                }
+        );
+
+        m.trainListener.onEpochFinished(epoch, trainMetrics, testMetrics, validationMetrics, trainDataCost, testDataCost, validationDataCost);
     }
 }

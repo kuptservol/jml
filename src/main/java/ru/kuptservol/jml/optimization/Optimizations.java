@@ -15,4 +15,8 @@ public class Optimizations {
     public static Dropout DROPOUT(double perc) {
         return new Dropout(perc);
     }
+
+    public static EarlyStopping EARLY_STOPPING(int noImprovementForSeriesLen) {
+        return new EarlyStopping(noImprovementForSeriesLen);
+    }
 }

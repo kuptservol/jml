@@ -91,6 +91,7 @@ public class PlotGraphResultHandler implements ResultHandler {
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNW);
         chart.addSeries("train", new double[]{0}, new double[]{0});
         chart.addSeries("test", new double[]{0}, new double[]{0});
+        chart.addSeries("validation", new double[]{0}, new double[]{0});
 
         chartSwingWrapper = new SwingWrapper<>(chart);
         chartSwingWrapper.displayChart();
