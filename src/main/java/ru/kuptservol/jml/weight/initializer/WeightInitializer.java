@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public interface WeightInitializer extends Serializable {
 
-    double[][] init(int x, int y);
+    double[][] initWeights(int x, int y);
 
-    double[] init(int x);
+    double[] initBiases(int x);
 }

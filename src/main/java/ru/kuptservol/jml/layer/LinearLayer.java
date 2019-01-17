@@ -22,7 +22,7 @@ public class LinearLayer implements Layer {
     @Builder.Default
     private Dropout dropout = Optimizations.DROPOUT(1);
     @Builder.Default
-    private WeightInitializer weightInitializer = WeightInitializers.gaussian(1);
+    private WeightInitializer weightInitializer = WeightInitializers.GAUSSIAN(1);
     @Builder.Default
     private ActivationFunction activationFunction = ActivationFunctions.SIGMOID;
 
@@ -41,9 +41,9 @@ public class LinearLayer implements Layer {
         this.in = in;
         this.out = out;
         this.weightInitializer = Optional.ofNullable(weightInitializer).orElse(this.weightInitializer);
-        this.weights = this.weightInitializer.init(in, out);
+        this.weights = this.weightInitializer.initWeights(in, out);
         this.deltaWeights = new double[in][out];
-        this.biases = this.weightInitializer.init(out);
+        this.biases = this.weightInitializer.initBiases(out);
         this.deltaBiases = new double[out];
         this.prevLayerActivations = new double[in];
         this.z = new double[out];

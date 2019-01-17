@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import ru.kuptservol.jml.weight.initializer.WeightInitializer;
 
 /**
  * @author Sergey Kuptsov
@@ -17,11 +18,17 @@ public class Layers implements Serializable {
 
     private LinkedList<Layer> hiddenLayers;
 
+
     public Layer last() {
         return hiddenLayers.getLast();
     }
 
-    public static LayersBuilder linear(double learningRate, double dropout, Integer... size) {
+    public static LayersBuilder linear(
+            double learningRate,
+            double dropout,
+            WeightInitializer weightInitializer,
+            Integer... size)
+    {
         if (size.length < 2) {
             throw new IllegalArgumentException("Size cannot be less than 2");
         }
@@ -42,6 +49,7 @@ public class Layers implements Serializable {
         for (int i = 2; i < size.length; i++) {
             LinearLayer.LinearLayerBuilder nextLB = LinearLayer.builder()
                     .in(size[i - 1])
+                    .weightInitializer(weightInitializer)
                     .out(size[i])
                     .learningRate(learningRate);
 

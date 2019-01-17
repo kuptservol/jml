@@ -15,3 +15,6 @@ public interface WeightInitializer extends Serializable {
         return M.FR(v -> limit * random.nextGaussian(), vals);
     }
 ```
+###### Sharp Gaussian
+
+

@@ -24,6 +24,7 @@ import ru.kuptservol.jml.train.SGD;
 import ru.kuptservol.jml.train.Trainer;
 import ru.kuptservol.jml.train.listener.TrainListener;
 import ru.kuptservol.jml.train.listener.TrainListeners;
+import ru.kuptservol.jml.weight.initializer.WeightInitializers;
 
 /**
  * @author Sergey Kuptsov
@@ -35,7 +36,7 @@ public class Model implements Serializable {
 
     @Builder.Default
     public Layers layers = Layers
-            .linear(1, 1, 10, 1)
+            .linear(1, 1, WeightInitializers.GAUSSIAN(1), 10, 1)
             .build();
 
     @Builder.Default

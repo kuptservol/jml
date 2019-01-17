@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import ru.kuptservol.jml.layer.Layers;
+import ru.kuptservol.jml.weight.initializer.WeightInitializer;
+import ru.kuptservol.jml.weight.initializer.WeightInitializers;
 
 /**
  * @author Sergey Kuptsov
@@ -17,7 +19,19 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(learningRate, 1, size)
+                .linear(learningRate, 1, WeightInitializers.GAUSSIAN(1), size)
+                .build();
+
+        modelBuilder.layers(layers);
+
+        return modelBuilder;
+    }
+
+    public static Model.ModelBuilder linear(Double learningRate, WeightInitializer weightInitializer, Integer... size) {
+        Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
+
+        Layers layers = Layers
+                .linear(learningRate, 1, weightInitializer, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -29,7 +43,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(learningRate, dropout, size)
+                .linear(learningRate, dropout, WeightInitializers.GAUSSIAN(1), size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -41,7 +55,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0.5, 1, size)
+                .linear(0.5, 1, WeightInitializers.GAUSSIAN(1), size)
                 .build();
 
         modelBuilder.layers(layers);
