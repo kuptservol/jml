@@ -25,7 +25,11 @@ and are resistant to learning peculiarities of the noise in the training data.
 In L1 regularization, the weights shrink by a constant amount toward 0. In L2 regularization, the weights shrink by an amount which is proportional to w. And so when a particular weight has a large magnitude, |w|, L1 regularization shrinks the weight much less than L2 regularization does. By contrast, when |w| is small, L1 regularization shrinks the weight much more than L2 regularization. The net result is that L1 regularization tends to concentrate the weight of the network in a relatively small number of high-importance connections, while the other weights are driven toward zero.
 
 
-##### Early stopping
+##### Early stopping to determine the number of training epochs
+arly stopping means that at the end of each epoch we should compute the classification accuracy on the validation data. 
+When that stops improving, terminate.
+Furthermore, early stopping also automatically prevents us from overfitting.
+
 ##### Measuring accuracy on validation data sets
 When we set the hyper-parameters based on evaluations of the test_data it's possible we'll end 
 up overfitting our hyper-parameters to the test_data. We may end up finding hyper-parameters which 
@@ -41,4 +45,15 @@ The different networks will overfit in different ways, and so, hopefully, the ne
 
    
 ##### Increasing train data size
-##### Hyper-params swipper
+##### Hyper-parameters auto tunning
+##### Learninig rate auto tunning
+
+Start from some initial rather small value -> increase it and try until validation cost decreases.
+
+##### Varying learning rate during training(adaptive learning rate)
+
+It's likely that the weights are badly wrong. 
+And so it's best to use a large learning rate that causes the weights to change quickly. 
+Later, we can reduce the learning rate as we make more fine-tuned adjustments to our weights.
+
+##### Epochs batch calculating parallellization

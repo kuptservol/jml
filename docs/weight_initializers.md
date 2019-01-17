@@ -16,5 +16,7 @@ public interface WeightInitializer extends Serializable {
     }
 ```
 ###### Sharp Gaussian
+The idea is to have more sharp probability density function of activations on hidden layers - 
+so standart deviation is not >> 1 or << 0 - so sigmoid activation do not saturate at start in hidden layers
 
 
