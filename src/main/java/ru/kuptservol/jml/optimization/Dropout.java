@@ -20,9 +20,9 @@ public class Dropout {
     public void initMask(int length) {
         mask = new double[length];
 
-        double scale = 1 / (1 - perc);
+        double scale = perc == 1 ? 0 : 1 / (1 - perc);
         for (int i = 0; i < mask.length; i++) {
-            mask[i] = perc >= 1 ? 1 : Math.pow(random.nextDouble(), 2) >= perc ? scale : 0;
+            mask[i] = perc == 0 ? 1 : Math.pow(random.nextDouble(), 2) >= perc ? scale : 0;
         }
     }
 

@@ -1,5 +1,6 @@
 package ru.kuptservol.jml.train;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
@@ -32,21 +33,30 @@ public class SGD implements Trainer {
         double[][] trainX = dataSet.train.x;
         double[][] trainY = dataSet.train.y;
         m.trainListener.onTrainStarted();
-        for (int i = 0; i < epochs && m.earlyStopO.map(EarlyStopping::doContinue).orElse(true); i++) {
-            m.trainListener.onEpochStarted(i);
 
-            M.shuffle(trainX, trainY);
+        Iterator<Double> learningRates = m.adaptiveLearningRate.learningRates();
+        while (learningRates.hasNext()) {
+            Double learningRate = learningRates.next();
+            m.trainListener.setLearningRate(learningRate);
+            m.layers.setLearningRate(learningRate);
+            m.earlyStopO.ifPresent(EarlyStopping::reset);
 
-            M.Data[] miniBatches = M.chunk(trainX, trainY, batchSize);
+            for (int i = 0; i < epochs && m.earlyStopO.map(EarlyStopping::doContinue).orElse(true); i++) {
+                m.trainListener.onEpochStarted(i);
 
-            for (int j = 0; j < miniBatches.length; j++) {
-                M.Data miniBatch = miniBatches[j];
+                M.shuffle(trainX, trainY);
 
-                trainOnMiniBatch(miniBatch, m, j);
+                M.Data[] miniBatches = M.chunk(trainX, trainY, batchSize);
+
+                for (int j = 0; j < miniBatches.length; j++) {
+                    M.Data miniBatch = miniBatches[j];
+
+                    trainOnMiniBatch(miniBatch, m, j);
+                }
+
+                handleEpochResults(m, dataSet, i);
+
             }
-
-            handleEpochResults(m, dataSet, i);
-
         }
         m.trainListener.onTrainFinished(m);
     }

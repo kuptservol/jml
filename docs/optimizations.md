@@ -46,7 +46,7 @@ The different networks will overfit in different ways, and so, hopefully, the ne
    
 ##### Increasing train data size
 ##### Hyper-parameters auto tunning
-##### Learninig rate auto tunning
+##### Learning rate auto tuning
 
 Start from some initial rather small value -> increase it and try until validation cost decreases.
 

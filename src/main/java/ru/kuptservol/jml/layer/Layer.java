@@ -17,6 +17,8 @@ public interface Layer extends Serializable {
 
     void onBatchStarted();
 
+    void setLearningRate(double learningRate);
+
     double norm(Regularization regularization);
 
     void onBatchFinished(int batchSize, Regularization l2Reg);

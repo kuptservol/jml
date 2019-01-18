@@ -15,6 +15,7 @@ import ru.kuptservol.jml.layer.Layers;
 import ru.kuptservol.jml.metric.Metric;
 import ru.kuptservol.jml.metric.result.ResultHandler;
 import ru.kuptservol.jml.metric.result.ResultHandlers;
+import ru.kuptservol.jml.optimization.AdaptiveLearningRate;
 import ru.kuptservol.jml.optimization.EarlyStopping;
 import ru.kuptservol.jml.optimization.Optimizations;
 import ru.kuptservol.jml.optimization.Regularization;
@@ -36,7 +37,7 @@ public class Model implements Serializable {
 
     @Builder.Default
     public Layers layers = Layers
-            .linear(1, 1, WeightInitializers.GAUSSIAN(1), 10, 1)
+            .linear(0, WeightInitializers.GAUSSIAN(1), 10, 1)
             .build();
 
     @Builder.Default
@@ -60,6 +61,8 @@ public class Model implements Serializable {
     public ResultHandler metricResultHandler = ResultHandlers.EMPTY;
     @Builder.Default
     public Optional<EarlyStopping> earlyStopO = Optional.empty();
+    @Builder.Default
+    public AdaptiveLearningRate adaptiveLearningRate = Optimizations.CONST_LEARNING_RATE(0.1);
 
     public void train(double[][] X, double[][] Y) {
         trainer.train(this, X, Y);

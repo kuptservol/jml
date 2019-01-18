@@ -54,4 +54,9 @@ public class LogTrainListener implements TrainListener {
     public void onTrainFinished(Model m) {
         logger.info("Train finished");
     }
+
+    @Override
+    public void setLearningRate(Double learningRate) {
+        logger.info("Training with learning rate {}", learningRate);
+    }
 }

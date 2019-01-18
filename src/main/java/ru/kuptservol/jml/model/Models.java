@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import ru.kuptservol.jml.layer.Layers;
+import ru.kuptservol.jml.optimization.Optimizations;
 import ru.kuptservol.jml.weight.initializer.WeightInitializer;
 import ru.kuptservol.jml.weight.initializer.WeightInitializers;
 
@@ -19,10 +20,11 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(learningRate, 1, WeightInitializers.GAUSSIAN(1), size)
+                .linear(0, WeightInitializers.GAUSSIAN(1), size)
                 .build();
 
         modelBuilder.layers(layers);
+        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(learningRate));
 
         return modelBuilder;
     }
@@ -31,10 +33,11 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(learningRate, 1, weightInitializer, size)
+                .linear(0, weightInitializer, size)
                 .build();
 
         modelBuilder.layers(layers);
+        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(learningRate));
 
         return modelBuilder;
     }
@@ -43,10 +46,11 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(learningRate, dropout, WeightInitializers.GAUSSIAN(1), size)
+                .linear(dropout, WeightInitializers.GAUSSIAN(1), size)
                 .build();
 
         modelBuilder.layers(layers);
+        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(learningRate));
 
         return modelBuilder;
     }
@@ -55,10 +59,11 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0.5, 1, WeightInitializers.GAUSSIAN(1), size)
+                .linear(0, WeightInitializers.GAUSSIAN(1), size)
                 .build();
 
         modelBuilder.layers(layers);
+        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(0.5));
 
         return modelBuilder;
     }

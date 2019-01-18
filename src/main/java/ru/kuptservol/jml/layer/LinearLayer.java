@@ -20,7 +20,7 @@ public class LinearLayer implements Layer {
     @Builder.Default
     private double learningRate = 0.1;
     @Builder.Default
-    private Dropout dropout = Optimizations.DROPOUT(1);
+    private Dropout dropout = Optimizations.DROPOUT(0);
     @Builder.Default
     private WeightInitializer weightInitializer = WeightInitializers.GAUSSIAN(1);
     @Builder.Default
@@ -105,6 +105,11 @@ public class LinearLayer implements Layer {
     public void onBatchStarted() {
         initDropoutMask();
         resetBatchWeights();
+    }
+
+    @Override
+    public void setLearningRate(double learningRate) {
+        this.learningRate = learningRate;
     }
 
     private void initDropoutMask() {

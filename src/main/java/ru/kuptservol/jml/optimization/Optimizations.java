@@ -19,4 +19,12 @@ public class Optimizations {
     public static EarlyStopping EARLY_STOPPING(int noImprovementForSeriesLen) {
         return new EarlyStopping(noImprovementForSeriesLen);
     }
+
+    public static AdaptiveLearningRate CONST_LEARNING_RATE(double learningRate) {
+        return new ConstAdaptiveLearningRate(learningRate);
+    }
+
+    public static AdaptiveLearningRate CONST_DECREASING_LEARNING_RATE(double learningRate) {
+        return new ConstDecreasingAdaptiveLearningRate(learningRate);
+    }
 }

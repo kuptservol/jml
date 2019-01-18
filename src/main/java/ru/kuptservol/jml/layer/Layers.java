@@ -18,13 +18,11 @@ public class Layers implements Serializable {
 
     private LinkedList<Layer> hiddenLayers;
 
-
     public Layer last() {
         return hiddenLayers.getLast();
     }
 
     public static LayersBuilder linear(
-            double learningRate,
             double dropout,
             WeightInitializer weightInitializer,
             Integer... size)
@@ -41,7 +39,6 @@ public class Layers implements Serializable {
                 .in(size[0])
                 .out(size[1])
                 .dropout(dropout)
-                .learningRate(learningRate)
                 .build();
 
         hiddenLayers.addLast(first);
@@ -50,8 +47,7 @@ public class Layers implements Serializable {
             LinearLayer.LinearLayerBuilder nextLB = LinearLayer.builder()
                     .in(size[i - 1])
                     .weightInitializer(weightInitializer)
-                    .out(size[i])
-                    .learningRate(learningRate);
+                    .out(size[i]);
 
             if (i < size.length - 1) {
                 nextLB.dropout(dropout);
@@ -60,6 +56,10 @@ public class Layers implements Serializable {
         }
 
         return builder.hiddenLayers(hiddenLayers);
+    }
+
+    public void setLearningRate(double lR) {
+        hiddenLayers.forEach(layer -> layer.setLearningRate(lR));
     }
 
     public double[] forward(double[] input) {

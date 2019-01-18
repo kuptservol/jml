@@ -27,4 +27,6 @@ public interface TrainListener extends Serializable {
     void onTrainStarted();
 
     void onTrainFinished(Model m);
+
+    void setLearningRate(Double learningRate);
 }
