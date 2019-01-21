@@ -25,6 +25,7 @@ public class Layers implements Serializable {
     public static LayersBuilder linear(
             double dropout,
             WeightInitializer weightInitializer,
+            double momentumCoEff,
             Integer... size)
     {
         if (size.length < 2) {
@@ -38,6 +39,7 @@ public class Layers implements Serializable {
         LinearLayer first = LinearLayer.builder()
                 .in(size[0])
                 .out(size[1])
+                .momentumCoeff(momentumCoEff)
                 .dropout(dropout)
                 .build();
 
@@ -46,6 +48,7 @@ public class Layers implements Serializable {
         for (int i = 2; i < size.length; i++) {
             LinearLayer.LinearLayerBuilder nextLB = LinearLayer.builder()
                     .in(size[i - 1])
+                    .momentumCoeff(momentumCoEff)
                     .weightInitializer(weightInitializer)
                     .out(size[i]);
 

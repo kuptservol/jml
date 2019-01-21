@@ -179,4 +179,24 @@ public class MNISTest {
 
         model.train(mnist);
     }
+
+    @Test
+    public void learnWithCrossEntropy100L2RegEarlyStopSharpWeightInitWithMomentum_0_5() throws IOException {
+        DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
+
+        PlotGraphResultHandler graph = PlotGraphResultHandler
+                .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5.png"));
+
+        Model model = Models.linear(0.01, WeightInitializers.SHARP_GAUSSIAN, 0.5, 784, 100, 10)
+                .trainer(Trainers.SGD(100, 100).build())
+                .resultF(OutputFunctions.MAX_INDEX)
+                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
+                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
+                .metrics(Metrics.ACCURACY.build())
+                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
+                .regularization(Optimizations.L2_REG(5))
+                .build();
+
+        model.train(mnist);
+    }
 }

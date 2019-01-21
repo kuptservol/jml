@@ -20,7 +20,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, WeightInitializers.GAUSSIAN(1), size)
+                .linear(0, WeightInitializers.GAUSSIAN(1), 0, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -33,7 +33,20 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, weightInitializer, size)
+                .linear(0, weightInitializer, 0, size)
+                .build();
+
+        modelBuilder.layers(layers);
+        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(learningRate));
+
+        return modelBuilder;
+    }
+
+    public static Model.ModelBuilder linear(Double learningRate, WeightInitializer weightInitializer, Double momentumCoEff, Integer... size) {
+        Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
+
+        Layers layers = Layers
+                .linear(0, weightInitializer, momentumCoEff, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -46,7 +59,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(dropout, WeightInitializers.GAUSSIAN(1), size)
+                .linear(dropout, WeightInitializers.GAUSSIAN(1), 0, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -59,7 +72,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, WeightInitializers.GAUSSIAN(1), size)
+                .linear(0, WeightInitializers.GAUSSIAN(1), 0, size)
                 .build();
 
         modelBuilder.layers(layers);

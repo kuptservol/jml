@@ -37,7 +37,7 @@ public class Model implements Serializable {
 
     @Builder.Default
     public Layers layers = Layers
-            .linear(0, WeightInitializers.GAUSSIAN(1), 10, 1)
+            .linear(0, WeightInitializers.GAUSSIAN(1), 0, 10, 1)
             .build();
 
     @Builder.Default

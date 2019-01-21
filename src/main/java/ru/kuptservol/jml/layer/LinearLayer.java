@@ -20,6 +20,8 @@ public class LinearLayer implements Layer {
     @Builder.Default
     private double learningRate = 0.1;
     @Builder.Default
+    private double momentumCoeff = 0;
+    @Builder.Default
     private Dropout dropout = Optimizations.DROPOUT(0);
     @Builder.Default
     private WeightInitializer weightInitializer = WeightInitializers.GAUSSIAN(1);
@@ -30,6 +32,7 @@ public class LinearLayer implements Layer {
     private final int out;
 
     private double[][] weights;
+    private double[][] dwWithMomentum;
     private double[] prevLayerActivations;
     private double[][] deltaWeights;
     private double[] deltaBiases;
@@ -37,17 +40,27 @@ public class LinearLayer implements Layer {
     private double[] z;
 
     @Builder
-    public LinearLayer(int in, int out, Double learningRate, Double dropout, WeightInitializer weightInitializer, ActivationFunction activationFunction) {
+    public LinearLayer(
+            int in,
+            int out,
+            Double learningRate,
+            Double dropout,
+            WeightInitializer weightInitializer,
+            ActivationFunction activationFunction,
+            Double momentumCoeff)
+    {
         this.in = in;
         this.out = out;
         this.weightInitializer = Optional.ofNullable(weightInitializer).orElse(this.weightInitializer);
         this.weights = this.weightInitializer.initWeights(in, out);
+        this.dwWithMomentum = new double[in][out];
         this.deltaWeights = new double[in][out];
         this.biases = this.weightInitializer.initBiases(out);
         this.deltaBiases = new double[out];
         this.prevLayerActivations = new double[in];
         this.z = new double[out];
         this.learningRate = Optional.ofNullable(learningRate).orElse(this.learningRate);
+        this.momentumCoeff = Optional.ofNullable(momentumCoeff).orElse(this.momentumCoeff);
         this.activationFunction = Optional.ofNullable(activationFunction).orElse(this.activationFunction);
         this.dropout = Optional.ofNullable(dropout).map(Optimizations::DROPOUT).orElse(this.dropout);
     }
@@ -83,6 +96,7 @@ public class LinearLayer implements Layer {
         double[][] dCDw = M.dotR(prevLayerActivations, dCDa);
 
         M.plus(deltaBiases, dCDb);
+        M.plus(deltaWeights, dCDw);
         M.plus(deltaWeights, dCDw);
 
         return M.dotR(weights, dCDa);
@@ -132,7 +146,9 @@ public class LinearLayer implements Layer {
     }
 
     private void updateBatchWeights(int batchSize, Regularization reg) {
-        M.F(weights, deltaWeights, (w, dw) -> w - reg.reg(learningRate, batchSize, w) - dw * (learningRate / batchSize));
+        M.F(dwWithMomentum, deltaWeights, (momentum, dw) -> momentum * momentumCoeff - (1.0 / batchSize) * dw * learningRate);
+
+        M.F(weights, dwWithMomentum, (w, dwWithMomentum) -> w - reg.reg(learningRate, batchSize, w) + dwWithMomentum);
         M.F(biases, deltaBiases, (b, db) -> b - db * (learningRate / batchSize));
     }
 

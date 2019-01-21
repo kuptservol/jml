@@ -31,3 +31,5 @@ In stochastic gradient descent we don't want to wait all inputs proceed to make 
         m.layers.forEach(layer -> layer.onBatchFinished(trainMiniBatch.size));
     } 
 ```
+###### Hessian
+###### Momentum-based gradient descent

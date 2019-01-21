@@ -43,9 +43,8 @@ When we dropout different sets of neurons, it's rather like we're training diffe
 And so the dropout procedure is like averaging the effects of a very large number of different networks. 
 The different networks will overfit in different ways, and so, hopefully, the net effect of dropout will be to reduce overfitting.
 
-   
 ##### Increasing train data size
-##### Hyper-parameters auto tunning
+##### Hyper-parameters auto tuning 
 ##### Learning rate auto tuning
 
 Start from some initial rather small value -> increase it and try until validation cost decreases.
@@ -56,4 +55,5 @@ It's likely that the weights are badly wrong.
 And so it's best to use a large learning rate that causes the weights to change quickly. 
 Later, we can reduce the learning rate as we make more fine-tuned adjustments to our weights.
 
-##### Epochs batch calculating parallellization
+##### Epochs batch calculating parallelization
+##### SGD with momentum
