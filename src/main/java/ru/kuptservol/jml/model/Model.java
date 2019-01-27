@@ -8,6 +8,7 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import ru.kuptservol.jml.activation.function.ActivationFunctions;
 import ru.kuptservol.jml.cost.function.CostFunction;
 import ru.kuptservol.jml.cost.function.CostFunctions;
 import ru.kuptservol.jml.data.DataSet;
@@ -37,7 +38,13 @@ public class Model implements Serializable {
 
     @Builder.Default
     public Layers layers = Layers
-            .linear(0, WeightInitializers.GAUSSIAN(1), 0, 10, 1)
+            .linear(
+                    0,
+                    WeightInitializers.GAUSSIAN(1),
+                    ActivationFunctions.SIGMOID,
+                    0,
+                    10,
+                    1)
             .build();
 
     @Builder.Default

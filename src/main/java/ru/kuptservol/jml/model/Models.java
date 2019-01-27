@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import ru.kuptservol.jml.activation.function.ActivationFunction;
+import ru.kuptservol.jml.activation.function.ActivationFunctions;
 import ru.kuptservol.jml.layer.Layers;
 import ru.kuptservol.jml.optimization.Optimizations;
 import ru.kuptservol.jml.weight.initializer.WeightInitializer;
@@ -20,7 +22,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, WeightInitializers.GAUSSIAN(1), 0, size)
+                .linear(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -33,7 +35,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, weightInitializer, 0, size)
+                .linear(0, weightInitializer, ActivationFunctions.SIGMOID, 0, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -46,7 +48,26 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, weightInitializer, momentumCoEff, size)
+                .linear(0, weightInitializer, ActivationFunctions.SIGMOID, momentumCoEff, size)
+                .build();
+
+        modelBuilder.layers(layers);
+        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(learningRate));
+
+        return modelBuilder;
+    }
+
+    public static Model.ModelBuilder linear(
+            Double learningRate,
+            ActivationFunction activationFunction,
+            WeightInitializer weightInitializer,
+            Double momentumCoEff,
+            Integer... size)
+    {
+        Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
+
+        Layers layers = Layers
+                .linear(0, weightInitializer, activationFunction, momentumCoEff, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -59,7 +80,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(dropout, WeightInitializers.GAUSSIAN(1), 0, size)
+                .linear(dropout, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -72,7 +93,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, WeightInitializers.GAUSSIAN(1), 0, size)
+                .linear(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
                 .build();
 
         modelBuilder.layers(layers);

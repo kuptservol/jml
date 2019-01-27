@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import ru.kuptservol.jml.activation.function.ActivationFunction;
 import ru.kuptservol.jml.weight.initializer.WeightInitializer;
 
 /**
@@ -25,6 +26,7 @@ public class Layers implements Serializable {
     public static LayersBuilder linear(
             double dropout,
             WeightInitializer weightInitializer,
+            ActivationFunction activationFunction,
             double momentumCoEff,
             Integer... size)
     {
@@ -39,6 +41,7 @@ public class Layers implements Serializable {
         LinearLayer first = LinearLayer.builder()
                 .in(size[0])
                 .out(size[1])
+                .activationFunction(activationFunction)
                 .momentumCoeff(momentumCoEff)
                 .dropout(dropout)
                 .build();

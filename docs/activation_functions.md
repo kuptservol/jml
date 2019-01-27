@@ -19,3 +19,5 @@ public interface ActivationFunction extends Serializable {
         return 1.0 / (1.0 + Math.exp(-v));
     }
 ```
+###### Tanh
+
