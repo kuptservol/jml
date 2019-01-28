@@ -20,4 +20,5 @@ public interface ActivationFunction extends Serializable {
     }
 ```
 ###### Tanh
+###### ReLU
 

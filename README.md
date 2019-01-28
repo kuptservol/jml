@@ -18,6 +18,7 @@ Kaggle competiton https://www.kaggle.com/c/digit-recognizer/leaderboard
 * [Activation Functions](./docs/activation_functions.md)
 * [Training Methods](./docs/train.md)
 * [Optimizations](./docs/optimizations.md)
+* [Regularizations](./docs/regularizations.md)
   
 ##### With default settings:
 From `MNISTest.learnWithDefaultSettings`
