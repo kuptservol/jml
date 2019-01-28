@@ -11,8 +11,8 @@ import static java.lang.String.format;
  * @author Sergey Kuptsov
  */
 public class MnistReader {
-    public static final int LABEL_FILE_MAGIC_NUMBER = 2049;
-    public static final int IMAGE_FILE_MAGIC_NUMBER = 2051;
+    private static final int LABEL_FILE_MAGIC_NUMBER = 2049;
+    private static final int IMAGE_FILE_MAGIC_NUMBER = 2051;
 
     public static int[][] getLabels(String infile) {
 

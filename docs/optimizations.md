@@ -12,3 +12,5 @@ Later, we can reduce the learning rate as we make more fine-tuned adjustments to
 
 ##### Epochs batch calculating parallelization
 ##### SGD with momentum
+##### Deeper network
+More ddep network requires less elements

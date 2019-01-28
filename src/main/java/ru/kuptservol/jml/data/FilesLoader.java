@@ -18,10 +18,10 @@ import ru.kuptservol.jml.train.listener.LogTrainListener;
 /**
  * @author Sergey Kuptsov
  */
-public class FilesLoader {
+class FilesLoader {
     private final static Logger logger = LoggerFactory.getLogger(LogTrainListener.class);
 
-    public static void downloadIfNotExists(Path pathToDownload, String remoteFileLink, String fileName) throws IOException {
+    static void downloadIfNotExists(Path pathToDownload, String remoteFileLink, String fileName) throws IOException {
         Path fileDir = Paths.get(pathToDownload.toString(), fileName);
         if (!fileDir.toFile().exists()) {
             if (!pathToDownload.toFile().exists()) {
@@ -39,7 +39,7 @@ public class FilesLoader {
         }
     }
 
-    public static void gunzipIfNotExists(String dir, String gunzipFile, String toFile) throws IOException {
+    static void gunzipIfNotExists(String dir, String gunzipFile, String toFile) throws IOException {
         Path gunzipFilePath = Paths.get(dir, gunzipFile);
         Path toFilePath = Paths.get(dir, toFile);
         if (!toFilePath.toFile().exists()) {
