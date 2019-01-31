@@ -38,7 +38,7 @@ public class Model implements Serializable {
 
     @Builder.Default
     public Layers layers = Layers
-            .linear(
+            .fullyConnected(
                     0,
                     WeightInitializers.GAUSSIAN(1),
                     ActivationFunctions.SIGMOID,

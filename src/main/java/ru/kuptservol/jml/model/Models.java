@@ -22,7 +22,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
+                .fullyConnected(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -35,7 +35,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, weightInitializer, ActivationFunctions.SIGMOID, 0, size)
+                .fullyConnected(0, weightInitializer, ActivationFunctions.SIGMOID, 0, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -48,7 +48,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, weightInitializer, ActivationFunctions.SIGMOID, momentumCoEff, size)
+                .fullyConnected(0, weightInitializer, ActivationFunctions.SIGMOID, momentumCoEff, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -67,7 +67,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, weightInitializer, activationFunction, momentumCoEff, size)
+                .fullyConnected(0, weightInitializer, activationFunction, momentumCoEff, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -80,7 +80,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(dropout, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
+                .fullyConnected(dropout, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -93,7 +93,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .linear(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
+                .fullyConnected(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
                 .build();
 
         modelBuilder.layers(layers);

@@ -23,7 +23,7 @@ public class Layers implements Serializable {
         return hiddenLayers.getLast();
     }
 
-    public static LayersBuilder linear(
+    public static LayersBuilder fullyConnected(
             double dropout,
             WeightInitializer weightInitializer,
             ActivationFunction activationFunction,

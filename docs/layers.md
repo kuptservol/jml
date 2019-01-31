@@ -83,3 +83,5 @@ If activation function is sigmoid then
         M.F(biases, deltaBiases, (b, db) -> b - db * (learningRate / batchSize));
     }
  ```
+ 
+ ###### Convolution

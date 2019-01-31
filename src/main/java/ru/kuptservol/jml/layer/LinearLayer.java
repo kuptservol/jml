@@ -97,7 +97,6 @@ public class LinearLayer implements Layer {
 
         M.plus(deltaBiases, dCDb);
         M.plus(deltaWeights, dCDw);
-        M.plus(deltaWeights, dCDw);
 
         return M.dotR(weights, dCDa);
     }

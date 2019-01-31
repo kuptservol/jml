@@ -27,6 +27,8 @@ public class SGD implements Trainer {
     private int batchSize = 10;
     @Builder.Default
     private long epochs = 30;
+    @Builder.Default
+    private long parallelization = 1;
 
     @Override
     public void train(Model m, DataSet dataSet) {

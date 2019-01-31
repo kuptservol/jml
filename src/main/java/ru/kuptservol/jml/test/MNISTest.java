@@ -222,11 +222,11 @@ public class MNISTest {
     }
 
     @Test
-    public void learnWithCrossEntropy100L2RegEarlyStopSharpWeightInitWithMomentum_0_5TanhActivation() throws IOException {
+    public void learnWithMSE100L2RegEarlyStopSharpWeightInitWithMomentum_0_5TanhActivation() throws IOException {
         DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
 
         PlotGraphResultHandler graph = PlotGraphResultHandler
-                .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5_tanh_af.png"));
+                .cons(Paths.get("./graph/learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5_tanh_af.png"));
 
         Model model = Models.linear(
                 0.01,
@@ -247,11 +247,11 @@ public class MNISTest {
     }
 
     @Test
-    public void learnWithCrossEntropy100L2RegEarlyStopSharpWeightInitWithMomentum_0_5ReLUActivation() throws IOException {
+    public void learnWithMSE100L2RegEarlyStopSharpWeightInitWithMomentum_0_5ReLUActivation() throws IOException {
         DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
 
         PlotGraphResultHandler graph = PlotGraphResultHandler
-                .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5_relu_af.png"));
+                .cons(Paths.get("./graph/learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5_relu_af.png"));
 
         Model model = Models.linear(
                 0.01,
@@ -262,7 +262,7 @@ public class MNISTest {
                 .trainer(Trainers.SGD(100, 100).build())
                 .resultF(OutputFunctions.MAX_INDEX)
                 .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
+                .costFunction(CostFunctions.MSE.resultHandler(ResultHandlers.EMPTY).build())
                 .metrics(Metrics.ACCURACY.build())
                 .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
                 .regularization(Optimizations.L2_REG(5))

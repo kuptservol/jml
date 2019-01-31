@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import ru.kuptservol.jml.layer.Layer;
 import ru.kuptservol.jml.matrix.M;
+import ru.kuptservol.jml.metric.result.ResultHandler;
+import ru.kuptservol.jml.metric.result.ResultHandlers;
 import ru.kuptservol.jml.model.Model;
 
 /**
@@ -12,6 +14,9 @@ import ru.kuptservol.jml.model.Model;
 @Builder
 @AllArgsConstructor
 public class MSE implements CostFunction {
+
+    @Builder.Default
+    private ResultHandler resultHandler = ResultHandlers.LOG;
 
     @Override
     public double cost(Model m, double[][] X, double[][] Y) {
