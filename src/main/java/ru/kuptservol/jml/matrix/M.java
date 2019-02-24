@@ -342,6 +342,20 @@ public class M {
         return norm;
     }
 
+    public static double convR(double[][] a, int x, int y, double[][] b) {
+        checkSameLength(x, b.length);
+        checkSameLength(y, b[0].length);
+
+        double res = 0;
+        for (int i = x, bI = 0; i < x + b.length; i++, bI++) {
+            for (int j = 0, bJ = 0; j < y + b[0].length; j++, bJ++) {
+                res += a[i][j]*b[bI][bJ];
+            }
+        }
+
+        return res;
+    }
+
     public static class Tuple2<T1, T2> {
         public T1 left;
         public T2 right;
