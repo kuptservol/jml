@@ -8,6 +8,7 @@ import ru.kuptservol.jml.activation.function.ActivationFunctions;
 import ru.kuptservol.jml.matrix.M;
 import ru.kuptservol.jml.optimization.Dropout;
 import ru.kuptservol.jml.optimization.Optimizations;
+import ru.kuptservol.jml.optimization.Optimizer;
 import ru.kuptservol.jml.optimization.Regularization;
 import ru.kuptservol.jml.weight.initializer.WeightInitializer;
 import ru.kuptservol.jml.weight.initializer.WeightInitializers;
@@ -18,8 +19,10 @@ import ru.kuptservol.jml.weight.initializer.WeightInitializers;
 public class LinearLayer implements Layer {
 
     @Builder.Default
+    // [nu:]
     private double learningRate = 0.1;
     @Builder.Default
+    // Beta
     private double momentumCoeff = 0;
     @Builder.Default
     private Dropout dropout = Optimizations.DROPOUT(0);
@@ -32,12 +35,16 @@ public class LinearLayer implements Layer {
     private final int out;
 
     private double[][] weights;
-    private double[][] dwWithMomentum;
+    // for prev in momentum
+    private double[][] weightBatchGradsPrev;
     private double[] prevLayerActivations;
-    private double[][] deltaWeights;
-    private double[] deltaBiases;
+    private double[][] weightBatchGrads;
+    private double[] biasBatchGrads;
+    private double[] biasBatchGradsPrev;
     private double[] biases;
     private double[] z;
+
+    private Optimizer optimizer;
 
     @Builder
     public LinearLayer(
@@ -47,22 +54,30 @@ public class LinearLayer implements Layer {
             Double dropout,
             WeightInitializer weightInitializer,
             ActivationFunction activationFunction,
-            Double momentumCoeff)
+            Double momentumCoeff,
+            Optimizer optimizer)
     {
         this.in = in;
         this.out = out;
+
         this.weightInitializer = Optional.ofNullable(weightInitializer).orElse(this.weightInitializer);
+
         this.weights = this.weightInitializer.initWeights(in, out);
-        this.dwWithMomentum = new double[in][out];
-        this.deltaWeights = new double[in][out];
+        this.weightBatchGradsPrev = new double[in][out];
+        this.weightBatchGrads = new double[in][out];
+
         this.biases = this.weightInitializer.initBiases(out);
-        this.deltaBiases = new double[out];
+        this.biasBatchGradsPrev = new double[out];
+        this.biasBatchGrads = new double[out];
+
         this.prevLayerActivations = new double[in];
         this.z = new double[out];
         this.learningRate = Optional.ofNullable(learningRate).orElse(this.learningRate);
         this.momentumCoeff = Optional.ofNullable(momentumCoeff).orElse(this.momentumCoeff);
         this.activationFunction = Optional.ofNullable(activationFunction).orElse(this.activationFunction);
         this.dropout = Optional.ofNullable(dropout).map(Optimizations::DROPOUT).orElse(this.dropout);
+
+        this.optimizer = optimizer;
     }
 
     @Override
@@ -95,8 +110,8 @@ public class LinearLayer implements Layer {
         /* dC/dw */
         double[][] dCDw = M.dotR(prevLayerActivations, dCDa);
 
-        M.plus(deltaBiases, dCDb);
-        M.plus(deltaWeights, dCDw);
+        M.plus(biasBatchGrads, dCDb);
+        M.plus(weightBatchGrads, dCDw);
 
         return M.dotR(weights, dCDa);
     }
@@ -108,8 +123,8 @@ public class LinearLayer implements Layer {
         /* dC/dw */
         double[][] dCDw = M.dotR(prevLayerActivations, dCostDa);
 
-        M.plus(deltaBiases, dCDb);
-        M.plus(deltaWeights, dCDw);
+        M.plus(biasBatchGrads, dCDb);
+        M.plus(weightBatchGrads, dCDw);
 
         return M.dotR(weights, dCostDa);
     }
@@ -130,8 +145,8 @@ public class LinearLayer implements Layer {
     }
 
     private void resetBatchWeights() {
-        deltaWeights = new double[in][out];
-        deltaBiases = new double[out];
+        weightBatchGrads = new double[in][out];
+        biasBatchGrads = new double[out];
     }
 
     @Override
@@ -145,10 +160,17 @@ public class LinearLayer implements Layer {
     }
 
     private void updateBatchWeights(int batchSize, Regularization reg) {
-        M.F(dwWithMomentum, deltaWeights, (momentum, dw) -> momentum * momentumCoeff - (1.0 / batchSize) * dw * learningRate);
+        // calculate weight grads with optimizer
+        optimizer.optimize(weightBatchGrads);
 
-        M.F(weights, dwWithMomentum, (w, dwWithMomentum) -> w - reg.reg(learningRate, batchSize, w) + dwWithMomentum);
-        M.F(biases, deltaBiases, (b, db) -> b - db * (learningRate / batchSize));
+        M.F(weights, weightBatchGrads, (weights, weightGrad)
+                -> weights - (1.0 / batchSize) * weightGrad * learningRate - reg.reg(learningRate, batchSize, weights));
+
+        optimizer.optimize(biasBatchGrads);
+
+        // calculate new biases
+        M.F(biases, biasBatchGrads,
+                (bias, biasGrad) -> bias - (1.0 / batchSize) * biasGrad * learningRate);
     }
 
     @Override

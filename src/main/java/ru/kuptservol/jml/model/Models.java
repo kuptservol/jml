@@ -6,23 +6,62 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import ru.kuptservol.jml.activation.function.ActivationFunction;
 import ru.kuptservol.jml.activation.function.ActivationFunctions;
 import ru.kuptservol.jml.layer.Layers;
 import ru.kuptservol.jml.optimization.Optimizations;
+import ru.kuptservol.jml.optimization.Optimizer;
+import ru.kuptservol.jml.optimization.Optimizers;
 import ru.kuptservol.jml.weight.initializer.WeightInitializer;
 import ru.kuptservol.jml.weight.initializer.WeightInitializers;
 
 /**
  * @author Sergey Kuptsov
  */
+@AllArgsConstructor
+@Getter
 public class Models {
+
+    @Builder
+    public static class LinearModelBuilder {
+        @Builder.Default
+        public double learningRate = 0.01;
+        @Builder.Default
+        public ActivationFunction activationFunction = ActivationFunctions.SIGMOID;
+        @Builder.Default
+        public WeightInitializer weightInitializer = WeightInitializers.GAUSSIAN(1);
+        @Builder.Default
+        public double dropout = 0;
+        @Builder.Default
+        public Optimizer optimizer = Optimizers.NONE();
+    }
+
+    public static Model.ModelBuilder linear(LinearModelBuilder linearModelBuilder, Integer... size) {
+        Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
+
+        Layers layers = Layers
+                .fullyConnected(
+                        linearModelBuilder.dropout,
+                        linearModelBuilder.weightInitializer,
+                        linearModelBuilder.activationFunction,
+                        linearModelBuilder.optimizer,
+                        size)
+                .build();
+
+        modelBuilder.layers(layers);
+        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(linearModelBuilder.learningRate));
+
+        return modelBuilder;
+    }
 
     public static Model.ModelBuilder linear(Double learningRate, Integer... size) {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
+                .fullyConnected(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, Optimizers.RMS_PROP(0), size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -35,7 +74,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, weightInitializer, ActivationFunctions.SIGMOID, 0, size)
+                .fullyConnected(0, weightInitializer, ActivationFunctions.SIGMOID, Optimizers.RMS_PROP(0), size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -48,7 +87,11 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, weightInitializer, ActivationFunctions.SIGMOID, momentumCoEff, size)
+                .fullyConnected(0,
+                        weightInitializer,
+                        ActivationFunctions.SIGMOID,
+                        Optimizers.RMS_PROP(momentumCoEff),
+                        size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -67,7 +110,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, weightInitializer, activationFunction, momentumCoEff, size)
+                .fullyConnected(0, weightInitializer, activationFunction, Optimizers.RMS_PROP(momentumCoEff), size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -80,7 +123,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(dropout, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
+                .fullyConnected(dropout, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, Optimizers.RMS_PROP(0), size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -93,7 +136,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, 0, size)
+                .fullyConnected(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, Optimizers.RMS_PROP(0), size)
                 .build();
 
         modelBuilder.layers(layers);

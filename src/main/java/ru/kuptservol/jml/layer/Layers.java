@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import ru.kuptservol.jml.activation.function.ActivationFunction;
+import ru.kuptservol.jml.optimization.Optimizer;
 import ru.kuptservol.jml.weight.initializer.WeightInitializer;
 
 /**
@@ -27,7 +28,7 @@ public class Layers implements Serializable {
             double dropout,
             WeightInitializer weightInitializer,
             ActivationFunction activationFunction,
-            double momentumCoEff,
+            Optimizer optimizer,
             Integer... size)
     {
         if (size.length < 2) {
@@ -38,22 +39,26 @@ public class Layers implements Serializable {
 
         LinkedList<Layer> hiddenLayers = new LinkedList<>();
 
+        int in = size[0];
+        int out = size[1];
         LinearLayer first = LinearLayer.builder()
-                .in(size[0])
-                .out(size[1])
+                .in(in)
+                .out(out)
                 .activationFunction(activationFunction)
-                .momentumCoeff(momentumCoEff)
+                .optimizer(optimizer.init(in, out))
                 .dropout(dropout)
                 .build();
 
         hiddenLayers.addLast(first);
 
         for (int i = 2; i < size.length; i++) {
+            in = size[i - 1];
+            out = size[i];
             LinearLayer.LinearLayerBuilder nextLB = LinearLayer.builder()
-                    .in(size[i - 1])
-                    .momentumCoeff(momentumCoEff)
-                    .weightInitializer(weightInitializer)
-                    .out(size[i]);
+                    .in(in)
+                    .out(out)
+                    .optimizer(optimizer.init(in, out))
+                    .weightInitializer(weightInitializer);
 
             if (i < size.length - 1) {
                 nextLB.dropout(dropout);

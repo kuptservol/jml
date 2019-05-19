@@ -26,6 +26,7 @@ public class CrossEntropy implements CostFunction {
             double a = m.resultF.process(m.forward(X[i]));
             double y = m.resultF.process(Y[i]);
 
+            //todo: this is only for binary classification
             cost += M.nanToNum(-y * ln(a) - (1 - y) * ln(1 - a)) / X.length;
         }
 

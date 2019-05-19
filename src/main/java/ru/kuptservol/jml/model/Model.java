@@ -19,6 +19,7 @@ import ru.kuptservol.jml.metric.result.ResultHandlers;
 import ru.kuptservol.jml.optimization.AdaptiveLearningRate;
 import ru.kuptservol.jml.optimization.EarlyStopping;
 import ru.kuptservol.jml.optimization.Optimizations;
+import ru.kuptservol.jml.optimization.Optimizers;
 import ru.kuptservol.jml.optimization.Regularization;
 import ru.kuptservol.jml.result.function.OutputFunction;
 import ru.kuptservol.jml.result.function.OutputFunctions;
@@ -42,7 +43,7 @@ public class Model implements Serializable {
                     0,
                     WeightInitializers.GAUSSIAN(1),
                     ActivationFunctions.SIGMOID,
-                    0,
+                    Optimizers.NONE(),
                     10,
                     1)
             .build();
