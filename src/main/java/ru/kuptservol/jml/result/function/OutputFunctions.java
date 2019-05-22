@@ -7,7 +7,7 @@ import ru.kuptservol.jml.matrix.M;
  */
 public class OutputFunctions {
 
-    public final static OutputFunction MAX_INDEX = M::maxIndex;
+    public final static OutputFunction MaxIndex = M::maxIndex;
 
-    public final static OutputFunction MAX_VAL = M::maxVal;
+    public final static OutputFunction MaxVal = M::maxVal;
 }

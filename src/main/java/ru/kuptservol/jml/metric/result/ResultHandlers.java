@@ -7,7 +7,7 @@ public class ResultHandlers {
 
     public final static ResultHandler LOG = new LogResultHandler();
 
-    public final static ResultHandler EMPTY =
+    public final static ResultHandler Empty =
             new ResultHandler() {
                 @Override
                 public ResultHandler wrap(double cost, String dataLabel, String format) {
@@ -15,14 +15,14 @@ public class ResultHandlers {
                 }
             };
 
-    public static ResultHandler GRAPH(PlotGraphResultHandler graph) {
+    public static ResultHandler Graph(PlotGraphResultHandler graph) {
         return (cost, dataLabel, format) -> {
             graph.addPoint(cost, dataLabel);
             return graph;
         };
     }
 
-    public static ResultHandler GRAPH_AND_LOG(PlotGraphResultHandler graph) {
+    public static ResultHandler GraphAndLog(PlotGraphResultHandler graph) {
         return (cost, dataLabel, format) -> {
             graph.addPoint(cost, dataLabel);
             graph.print();

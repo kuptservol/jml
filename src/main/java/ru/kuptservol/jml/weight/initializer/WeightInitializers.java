@@ -5,9 +5,9 @@ package ru.kuptservol.jml.weight.initializer;
  */
 public class WeightInitializers {
 
-    public static GaussianWeightInitializer GAUSSIAN(double limit) {
+    public static GaussianWeightInitializer Gaussian(double limit) {
         return new GaussianWeightInitializer(limit);
     }
 
-    public static SharpGaussianWeightInitializer SHARP_GAUSSIAN = new SharpGaussianWeightInitializer();
+    public static SharpGaussianWeightInitializer SharpGaussian = new SharpGaussianWeightInitializer();
 }

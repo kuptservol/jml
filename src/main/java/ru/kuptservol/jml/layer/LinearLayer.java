@@ -25,9 +25,9 @@ public class LinearLayer implements Layer {
     // Beta
     private double momentumCoeff = 0;
     @Builder.Default
-    private Dropout dropout = Optimizations.DROPOUT(0);
+    private Dropout dropout = Optimizations.Dropout(0);
     @Builder.Default
-    private WeightInitializer weightInitializer = WeightInitializers.GAUSSIAN(1);
+    private WeightInitializer weightInitializer = WeightInitializers.Gaussian(1);
     @Builder.Default
     private ActivationFunction activationFunction = ActivationFunctions.SIGMOID;
 
@@ -75,7 +75,7 @@ public class LinearLayer implements Layer {
         this.learningRate = Optional.ofNullable(learningRate).orElse(this.learningRate);
         this.momentumCoeff = Optional.ofNullable(momentumCoeff).orElse(this.momentumCoeff);
         this.activationFunction = Optional.ofNullable(activationFunction).orElse(this.activationFunction);
-        this.dropout = Optional.ofNullable(dropout).map(Optimizations::DROPOUT).orElse(this.dropout);
+        this.dropout = Optional.ofNullable(dropout).map(Optimizations::Dropout).orElse(this.dropout);
 
         this.optimizer = optimizer;
     }
@@ -163,14 +163,14 @@ public class LinearLayer implements Layer {
         // calculate weight grads with optimizer
         optimizer.optimize(weightBatchGrads);
 
-        M.F(weights, weightBatchGrads, (weights, weightGrad)
-                -> weights - (1.0 / batchSize) * weightGrad * learningRate - reg.reg(learningRate, batchSize, weights));
+        M.F(weights, weightBatchGrads, (weights, weightBatchGrad)
+                -> weights - (1.0 / batchSize) * weightBatchGrad * learningRate - reg.reg(learningRate, batchSize, weights));
 
         optimizer.optimize(biasBatchGrads);
 
         // calculate new biases
         M.F(biases, biasBatchGrads,
-                (bias, biasGrad) -> bias - (1.0 / batchSize) * biasGrad * learningRate);
+                (bias, biasBatchGrad) -> bias - (1.0 / batchSize) * biasBatchGrad * learningRate);
     }
 
     @Override

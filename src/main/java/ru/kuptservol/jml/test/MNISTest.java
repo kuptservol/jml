@@ -40,14 +40,14 @@ public class MNISTest {
 
         Model model = Models.linear(784, 30, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
+                .resultF(OutputFunctions.MaxIndex)
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
                 .build();
 
         logger.debug("Accuracy before learn: " + ResultHandlers.LOG.wrap(
-                Metrics.ACCURACY.build().execute(model, mnist.train.x, mnist.train.y), "init",
-                Metrics.ACCURACY.build().printFormat()).print());
+                Metrics.Accuracy.build().execute(model, mnist.train.x, mnist.train.y), "init",
+                Metrics.Accuracy.build().printFormat()).print());
 
         model.train(mnist);
 
@@ -70,10 +70,10 @@ public class MNISTest {
 
         Model model = Models.linear(784, 30, 10)
                 .trainer(Trainers.SGD(100, 3).build())
-                .resultF(OutputFunctions.MAX_INDEX)
+                .resultF(OutputFunctions.MaxIndex)
                 .costFunction(CostFunctions.MSE.build())
-                .costResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .metrics(Metrics.ACCURACY.build())
+                .costResultHandler(ResultHandlers.GraphAndLog(graph))
+                .metrics(Metrics.Accuracy.build())
                 .build();
 
         model.train(mnist);
@@ -93,10 +93,10 @@ public class MNISTest {
 
         Model model = Models.linear(0.05, 784, 30, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
+                .resultF(OutputFunctions.MaxIndex)
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
                 .build();
 
         model.train(mnist);
@@ -111,11 +111,11 @@ public class MNISTest {
 
         Model model = Models.linear(0.01, 784, 30, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
@@ -130,12 +130,12 @@ public class MNISTest {
 
         Model model = Models.linear(0.01, 784, 100, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
@@ -148,14 +148,14 @@ public class MNISTest {
         PlotGraphResultHandler graph = PlotGraphResultHandler
                 .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init.png"));
 
-        Model model = Models.linear(0.01, WeightInitializers.SHARP_GAUSSIAN, 784, 100, 10)
+        Model model = Models.linear(0.01, WeightInitializers.SharpGaussian, 784, 100, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
@@ -168,15 +168,15 @@ public class MNISTest {
         PlotGraphResultHandler graph = PlotGraphResultHandler
                 .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_adaptive_lr.png"));
 
-        Model model = Models.linear(0.01, WeightInitializers.SHARP_GAUSSIAN, 784, 30, 10)
+        Model model = Models.linear(0.01, WeightInitializers.SharpGaussian, 784, 30, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(3)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
-                .adaptiveLearningRate(Optimizations.CONST_DECREASING_LEARNING_RATE(1))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(3)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
+                .adaptiveLearningRate(Optimizations.ConstDecreasingLearningRate(1))
                 .build();
 
         model.train(mnist);
@@ -189,14 +189,14 @@ public class MNISTest {
         PlotGraphResultHandler graph = PlotGraphResultHandler
                 .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5.png"));
 
-        Model model = Models.linear(0.01, WeightInitializers.SHARP_GAUSSIAN, 0.5, 784, 100, 10)
+        Model model = Models.linear(0.01, WeightInitializers.SharpGaussian, 0.5, 784, 100, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
@@ -211,40 +211,92 @@ public class MNISTest {
                         "/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5_baseline" +
                         ".png"));
 
-        Model model = Models.linear(0.01, WeightInitializers.SHARP_GAUSSIAN, 0.5, 784, 100, 10)
+        Model model = Models.linear(0.01, WeightInitializers.SharpGaussian, 0.5, 784, 100, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
     }
 
     @Test
-    public void tmp() throws IOException {
+    public void learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_rmsprop_0_9() throws IOException {
         DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
 
         PlotGraphResultHandler graph = PlotGraphResultHandler
-                .cons(Paths.get("./graph/tmp.png"));
+                .cons(Paths.get("./graph/learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_rmsprop_0_9"));
 
         Model model = Models.linear(
                 Models.LinearModelBuilder.builder()
                         .learningRate(0.01)
-                        .weightInitializer(WeightInitializers.SHARP_GAUSSIAN)
-                        .optimizer(Optimizers.RMS_PROP(0.5))
+                        .weightInitializer(WeightInitializers.SharpGaussian)
+                        .optimizer(Optimizers.RMSProp(0.9))
                         .build(),
                 784, 100, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.MSE.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.MSE.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
+                .build();
+
+        model.train(mnist);
+    }
+
+    @Test
+    public void learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_adam_0_9_0_9() throws IOException {
+        DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
+
+        PlotGraphResultHandler graph = PlotGraphResultHandler
+                .cons(Paths.get("./graph/learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_rmsprop_0_9"));
+
+        Model model = Models.linear(
+                Models.LinearModelBuilder.builder()
+                        .learningRate(0.01)
+                        .weightInitializer(WeightInitializers.SharpGaussian)
+                        .optimizer(Optimizers.Adam(0.9, 0.9))
+                        .build(),
+                784, 100, 10)
+                .trainer(Trainers.SGD(100, 100).build())
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.MSE.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
+                .build();
+
+        model.train(mnist);
+    }
+
+    @Test
+    public void learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_adam_0_5_0_5() throws IOException {
+        DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
+
+        PlotGraphResultHandler graph = PlotGraphResultHandler
+                .cons(Paths.get("./graph/learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_rmsprop_0_9"));
+
+        Model model = Models.linear(
+                Models.LinearModelBuilder.builder()
+                        .learningRate(0.01)
+                        .weightInitializer(WeightInitializers.SharpGaussian)
+                        .optimizer(Optimizers.Adam(0.5, 0.5))
+                        .build(),
+                784, 100, 10)
+                .trainer(Trainers.SGD(100, 100).build())
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.MSE.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
@@ -260,16 +312,16 @@ public class MNISTest {
         Model model = Models.linear(
                 0.01,
                 ActivationFunctions.TANH,
-                WeightInitializers.SHARP_GAUSSIAN,
+                WeightInitializers.SharpGaussian,
                 0.5,
                 784, 100, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
@@ -285,16 +337,16 @@ public class MNISTest {
         Model model = Models.linear(
                 0.01,
                 ActivationFunctions.ReLU,
-                WeightInitializers.SHARP_GAUSSIAN,
+                WeightInitializers.SharpGaussian,
                 0.5,
                 784, 100, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.MSE.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.MSE.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
@@ -307,14 +359,14 @@ public class MNISTest {
         PlotGraphResultHandler graph = PlotGraphResultHandler
                 .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5_deep.png"));
 
-        Model model = Models.linear(0.01, WeightInitializers.SHARP_GAUSSIAN, 0.5, 784, 100, 100, 100, 10)
+        Model model = Models.linear(0.01, WeightInitializers.SharpGaussian, 0.5, 784, 100, 100, 100, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
@@ -327,14 +379,14 @@ public class MNISTest {
         PlotGraphResultHandler graph = PlotGraphResultHandler
                 .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5_deep_2.png"));
 
-        Model model = Models.linear(0.01, WeightInitializers.SHARP_GAUSSIAN, 0.5, 784, 30, 30, 30, 10)
+        Model model = Models.linear(0.01, WeightInitializers.SharpGaussian, 0.5, 784, 30, 30, 30, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
@@ -347,14 +399,14 @@ public class MNISTest {
         PlotGraphResultHandler graph = PlotGraphResultHandler
                 .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5_deep_3.png"));
 
-        Model model = Models.linear(0.01, WeightInitializers.SHARP_GAUSSIAN, 0.5, 784, 50, 50, 10)
+        Model model = Models.linear(0.01, WeightInitializers.SharpGaussian, 0.5, 784, 50, 50, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);
@@ -367,14 +419,14 @@ public class MNISTest {
         PlotGraphResultHandler graph = PlotGraphResultHandler
                 .cons(Paths.get("./graph/learn_cross_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_momentum_0_5_deep_4.png"));
 
-        Model model = Models.linear(0.01, WeightInitializers.SHARP_GAUSSIAN, 0.5, 784, 10, 10, 10)
+        Model model = Models.linear(0.01, WeightInitializers.SharpGaussian, 0.5, 784, 10, 10, 10)
                 .trainer(Trainers.SGD(100, 100).build())
-                .resultF(OutputFunctions.MAX_INDEX)
-                .earlyStopO(Optional.of(Optimizations.EARLY_STOPPING(5)))
-                .costFunction(CostFunctions.CROSS_ENTROPY.resultHandler(ResultHandlers.EMPTY).build())
-                .metrics(Metrics.ACCURACY.build())
-                .metricResultHandler(ResultHandlers.GRAPH_AND_LOG(graph))
-                .regularization(Optimizations.L2_REG(5))
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
                 .build();
 
         model.train(mnist);

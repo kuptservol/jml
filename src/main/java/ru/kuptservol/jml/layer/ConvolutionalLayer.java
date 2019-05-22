@@ -1,13 +1,11 @@
 package ru.kuptservol.jml.layer;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import lombok.Builder;
 import ru.kuptservol.jml.activation.function.ActivationFunction;
 import ru.kuptservol.jml.activation.function.ActivationFunctions;
 import ru.kuptservol.jml.matrix.M;
-import ru.kuptservol.jml.optimization.Regularization;
 import ru.kuptservol.jml.weight.initializer.WeightInitializer;
 import ru.kuptservol.jml.weight.initializer.WeightInitializers;
 
@@ -21,7 +19,7 @@ public class ConvolutionalLayer {
     @Builder.Default
     private double momentumCoeff = 0;
     @Builder.Default
-    private WeightInitializer weightInitializer = WeightInitializers.GAUSSIAN(1);
+    private WeightInitializer weightInitializer = WeightInitializers.Gaussian(1);
     @Builder.Default
     private ActivationFunction activationFunction = ActivationFunctions.SIGMOID;
 

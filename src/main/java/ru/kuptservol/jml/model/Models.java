@@ -32,11 +32,11 @@ public class Models {
         @Builder.Default
         public ActivationFunction activationFunction = ActivationFunctions.SIGMOID;
         @Builder.Default
-        public WeightInitializer weightInitializer = WeightInitializers.GAUSSIAN(1);
+        public WeightInitializer weightInitializer = WeightInitializers.Gaussian(1);
         @Builder.Default
         public double dropout = 0;
         @Builder.Default
-        public Optimizer optimizer = Optimizers.NONE();
+        public Optimizer optimizer = Optimizers.None();
     }
 
     public static Model.ModelBuilder linear(LinearModelBuilder linearModelBuilder, Integer... size) {
@@ -52,7 +52,7 @@ public class Models {
                 .build();
 
         modelBuilder.layers(layers);
-        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(linearModelBuilder.learningRate));
+        modelBuilder.adaptiveLearningRate(Optimizations.ConstLearningRate(linearModelBuilder.learningRate));
 
         return modelBuilder;
     }
@@ -61,11 +61,11 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, Optimizers.RMS_PROP(0), size)
+                .fullyConnected(0, WeightInitializers.Gaussian(1), ActivationFunctions.SIGMOID, Optimizers.Momentum(0), size)
                 .build();
 
         modelBuilder.layers(layers);
-        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(learningRate));
+        modelBuilder.adaptiveLearningRate(Optimizations.ConstLearningRate(learningRate));
 
         return modelBuilder;
     }
@@ -74,11 +74,11 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, weightInitializer, ActivationFunctions.SIGMOID, Optimizers.RMS_PROP(0), size)
+                .fullyConnected(0, weightInitializer, ActivationFunctions.SIGMOID, Optimizers.Momentum(0), size)
                 .build();
 
         modelBuilder.layers(layers);
-        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(learningRate));
+        modelBuilder.adaptiveLearningRate(Optimizations.ConstLearningRate(learningRate));
 
         return modelBuilder;
     }
@@ -90,12 +90,12 @@ public class Models {
                 .fullyConnected(0,
                         weightInitializer,
                         ActivationFunctions.SIGMOID,
-                        Optimizers.RMS_PROP(momentumCoEff),
+                        Optimizers.Momentum(momentumCoEff),
                         size)
                 .build();
 
         modelBuilder.layers(layers);
-        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(learningRate));
+        modelBuilder.adaptiveLearningRate(Optimizations.ConstLearningRate(learningRate));
 
         return modelBuilder;
     }
@@ -110,11 +110,11 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, weightInitializer, activationFunction, Optimizers.RMS_PROP(momentumCoEff), size)
+                .fullyConnected(0, weightInitializer, activationFunction, Optimizers.Momentum(momentumCoEff), size)
                 .build();
 
         modelBuilder.layers(layers);
-        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(learningRate));
+        modelBuilder.adaptiveLearningRate(Optimizations.ConstLearningRate(learningRate));
 
         return modelBuilder;
     }
@@ -123,11 +123,11 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(dropout, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, Optimizers.RMS_PROP(0), size)
+                .fullyConnected(dropout, WeightInitializers.Gaussian(1), ActivationFunctions.SIGMOID, Optimizers.Momentum(0), size)
                 .build();
 
         modelBuilder.layers(layers);
-        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(learningRate));
+        modelBuilder.adaptiveLearningRate(Optimizations.ConstLearningRate(learningRate));
 
         return modelBuilder;
     }
@@ -136,11 +136,11 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, WeightInitializers.GAUSSIAN(1), ActivationFunctions.SIGMOID, Optimizers.RMS_PROP(0), size)
+                .fullyConnected(0, WeightInitializers.Gaussian(1), ActivationFunctions.SIGMOID, Optimizers.Momentum(0), size)
                 .build();
 
         modelBuilder.layers(layers);
-        modelBuilder.adaptiveLearningRate(Optimizations.CONST_LEARNING_RATE(0.5));
+        modelBuilder.adaptiveLearningRate(Optimizations.ConstLearningRate(0.5));
 
         return modelBuilder;
     }

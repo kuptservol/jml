@@ -5,18 +5,18 @@ import ru.kuptservol.jml.matrix.M;
 /**
  * @author Sergey Kuptsov
  */
-public class RMSprop implements Optimizer {
+public class Momentum implements Optimizer {
 
     private double[][] weightBatchGradsPrev;
     private double[] biasBatchGradsPrev;
     // beta
     private final double momentumCoeff;
 
-    public RMSprop(double momentumCoeff) {
+    public Momentum(double momentumCoeff) {
         this.momentumCoeff = momentumCoeff;
     }
 
-    private RMSprop(double momentumCoeff, int in, int out) {
+    private Momentum(double momentumCoeff, int in, int out) {
         this.momentumCoeff = momentumCoeff;
         this.weightBatchGradsPrev = new double[in][out];
         this.biasBatchGradsPrev = new double[out];
@@ -24,7 +24,7 @@ public class RMSprop implements Optimizer {
 
     @Override
     public Optimizer init(int in, int out) {
-        return new RMSprop(momentumCoeff, in, out);
+        return new Momentum(momentumCoeff, in, out);
     }
 
     @Override

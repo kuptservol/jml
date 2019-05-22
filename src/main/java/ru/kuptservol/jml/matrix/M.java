@@ -1,8 +1,10 @@
 package ru.kuptservol.jml.matrix;
 
+import java.io.PrintStream;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import static java.lang.Double.POSITIVE_INFINITY;
 
@@ -177,10 +179,10 @@ public class M {
         }
 
         if (a == POSITIVE_INFINITY) {
-            return Double.MAX_VALUE;
+            return Double.MAX_VALUE / 2;
         }
 
-        return Double.MIN_VALUE;
+        return Double.MIN_VALUE / 2;
     }
 
     public static double[] plusR(double[] a, double[] b) {
@@ -242,6 +244,46 @@ public class M {
         }
 
         return result;
+    }
+
+    public static void Print(double[][] a, PrintStream printStream) {
+        int nRows = 30;
+        int nColumns = 30;
+
+        printStream.print('[');
+        for (int i = 0; i < a.length; i++) {
+            if (i < nRows / 2 || i > a.length - nRows / 2) {
+                if (i != 0) {
+                    printStream.print(" ");
+                }
+                for (int j = 0; j < a[0].length; j++) {
+                    if (j < nColumns / 2 || j > a[0].length - nColumns / 2) {
+                        printStream.printf("%.2f", a[i][j]);
+                        if (j == a[0].length - 1) {
+                            if (i == a.length - 1) {
+                                printStream.print(']');
+                                printStream.println();
+                                IntStream.range(1, Math.min(nRows / 2, a[0].length))
+                                        .mapToObj(x -> "-----")
+                                        .forEach(printStream::print);
+                                printStream.println();
+                            } else {
+                                printStream.println();
+                            }
+                        } else {
+                            printStream.print(" ");
+                        }
+                    } else if (j == nColumns / 2) {
+                        printStream.print(" ... ");
+                    }
+                }
+            } else if (i == nRows / 2) {
+                IntStream.range(1, Math.min(nRows / 2, a[0].length / 2))
+                        .mapToObj(x -> "      ")
+                        .forEach(printStream::print);
+                printStream.println(" ... ");
+            }
+        }
     }
 
     public static void F(double[][] a, double[][] b, BiFunction<Double, Double, Double> bFunc) {

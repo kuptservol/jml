@@ -41,9 +41,9 @@ public class Model implements Serializable {
     public Layers layers = Layers
             .fullyConnected(
                     0,
-                    WeightInitializers.GAUSSIAN(1),
+                    WeightInitializers.Gaussian(1),
                     ActivationFunctions.SIGMOID,
-                    Optimizers.NONE(),
+                    Optimizers.None(),
                     10,
                     1)
             .build();
@@ -54,7 +54,7 @@ public class Model implements Serializable {
             .build();
 
     @Builder.Default
-    public Regularization regularization = Optimizations.L2_REG(0.0);
+    public Regularization regularization = Optimizations.L2Reg(0.0);
     @Builder.Default
     public TrainListener trainListener = TrainListeners.LOG_LISTENER;
     @Builder.Default
@@ -62,15 +62,15 @@ public class Model implements Serializable {
     @Builder.Default
     public Metric metrics;
     @Builder.Default
-    public OutputFunction resultF = OutputFunctions.MAX_VAL;
+    public OutputFunction resultF = OutputFunctions.MaxVal;
     @Builder.Default
     public ResultHandler costResultHandler = ResultHandlers.LOG;
     @Builder.Default
-    public ResultHandler metricResultHandler = ResultHandlers.EMPTY;
+    public ResultHandler metricResultHandler = ResultHandlers.Empty;
     @Builder.Default
     public Optional<EarlyStopping> earlyStopO = Optional.empty();
     @Builder.Default
-    public AdaptiveLearningRate adaptiveLearningRate = Optimizations.CONST_LEARNING_RATE(0.1);
+    public AdaptiveLearningRate adaptiveLearningRate = Optimizations.ConstLearningRate(0.1);
 
     public void train(double[][] X, double[][] Y) {
         trainer.train(this, X, Y);

@@ -5,11 +5,19 @@ package ru.kuptservol.jml.optimization;
  */
 public class Optimizers {
 
-    public static Optimizer RMS_PROP(double momentumCoeff) {
-        return new RMSprop(momentumCoeff);
+    public static Optimizer Momentum(double momentumCoeff) {
+        return new Momentum(momentumCoeff);
     }
 
-    public static Optimizer NONE() {
+    public static Optimizer RMSProp(double coeff) {
+        return new RMSProp(coeff);
+    }
+
+    public static Optimizer Adam(double coeff, double sqrCoeff) {
+        return new Adam(coeff, sqrCoeff);
+    }
+
+    public static Optimizer None() {
         return new Optimizer() {
             @Override
             public Optimizer init(int in, int out) {
