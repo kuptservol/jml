@@ -30,7 +30,7 @@ public class Models {
         @Builder.Default
         public double learningRate = 0.01;
         @Builder.Default
-        public ActivationFunction activationFunction = ActivationFunctions.SIGMOID;
+        public ActivationFunction activationFunction = ActivationFunctions.Sigmoid;
         @Builder.Default
         public WeightInitializer weightInitializer = WeightInitializers.Gaussian(1);
         @Builder.Default
@@ -61,7 +61,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, WeightInitializers.Gaussian(1), ActivationFunctions.SIGMOID, Optimizers.Momentum(0), size)
+                .fullyConnected(0, WeightInitializers.Gaussian(1), ActivationFunctions.Sigmoid, Optimizers.Momentum(0), size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -74,7 +74,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, weightInitializer, ActivationFunctions.SIGMOID, Optimizers.Momentum(0), size)
+                .fullyConnected(0, weightInitializer, ActivationFunctions.Sigmoid, Optimizers.Momentum(0), size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -89,7 +89,7 @@ public class Models {
         Layers layers = Layers
                 .fullyConnected(0,
                         weightInitializer,
-                        ActivationFunctions.SIGMOID,
+                        ActivationFunctions.Sigmoid,
                         Optimizers.Momentum(momentumCoEff),
                         size)
                 .build();
@@ -123,7 +123,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(dropout, WeightInitializers.Gaussian(1), ActivationFunctions.SIGMOID, Optimizers.Momentum(0), size)
+                .fullyConnected(dropout, WeightInitializers.Gaussian(1), ActivationFunctions.Sigmoid, Optimizers.Momentum(0), size)
                 .build();
 
         modelBuilder.layers(layers);
@@ -136,7 +136,7 @@ public class Models {
         Model.ModelBuilder modelBuilder = new Model.ModelBuilder();
 
         Layers layers = Layers
-                .fullyConnected(0, WeightInitializers.Gaussian(1), ActivationFunctions.SIGMOID, Optimizers.Momentum(0), size)
+                .fullyConnected(0, WeightInitializers.Gaussian(1), ActivationFunctions.Sigmoid, Optimizers.Momentum(0), size)
                 .build();
 
         modelBuilder.layers(layers);

@@ -15,6 +15,5 @@ public class ReLU implements ActivationFunction {
     @Override
     public double[] dADz(double[] z) {
         return M.FR(v -> v < 0 ? 0 : 1.0, z);
-
     }
 }

@@ -42,7 +42,7 @@ public class Model implements Serializable {
             .fullyConnected(
                     0,
                     WeightInitializers.Gaussian(1),
-                    ActivationFunctions.SIGMOID,
+                    ActivationFunctions.Sigmoid,
                     Optimizers.None(),
                     10,
                     1)

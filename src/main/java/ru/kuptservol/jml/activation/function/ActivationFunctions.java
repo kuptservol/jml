@@ -5,9 +5,13 @@ package ru.kuptservol.jml.activation.function;
  */
 public class ActivationFunctions {
 
-    public final static Sigmoid SIGMOID = new Sigmoid();
+    public final static Sigmoid Sigmoid = new Sigmoid();
 
-    public final static Tanh TANH = new Tanh();
+    public final static Tanh Tanh = new Tanh();
 
     public final static ReLU ReLU = new ReLU();
+
+    public final static Softmax Softmax = new Softmax();
+
+    public final static StableSoftmax StableSoftmax = new StableSoftmax();
 }

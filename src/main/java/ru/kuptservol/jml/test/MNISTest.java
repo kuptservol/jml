@@ -277,6 +277,32 @@ public class MNISTest {
     }
 
     @Test
+    public void learn_softmax_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_adam_0_9_0_9() throws IOException {
+        DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
+
+        PlotGraphResultHandler graph = PlotGraphResultHandler
+                .cons(Paths.get("./graph/learn_softmax_entropy_100_neurons_l2_reg_early_stop_sharp_weight_init_with_adam_0_9_0_9"));
+
+        Model model = Models.linear(
+                Models.LinearModelBuilder.builder()
+                        .learningRate(0.01)
+                        .weightInitializer(WeightInitializers.SharpGaussian)
+                        .optimizer(Optimizers.Adam(0.9, 0.9))
+                        .build(),
+                784, 100, 10)
+                .trainer(Trainers.SGD(100, 100).build())
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
+                .build();
+
+        model.train(mnist);
+    }
+
+    @Test
     public void learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_adam_0_5_0_5() throws IOException {
         DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
 
@@ -311,7 +337,7 @@ public class MNISTest {
 
         Model model = Models.linear(
                 0.01,
-                ActivationFunctions.TANH,
+                ActivationFunctions.Tanh,
                 WeightInitializers.SharpGaussian,
                 0.5,
                 784, 100, 10)

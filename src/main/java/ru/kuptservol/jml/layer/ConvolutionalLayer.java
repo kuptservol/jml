@@ -21,7 +21,7 @@ public class ConvolutionalLayer {
     @Builder.Default
     private WeightInitializer weightInitializer = WeightInitializers.Gaussian(1);
     @Builder.Default
-    private ActivationFunction activationFunction = ActivationFunctions.SIGMOID;
+    private ActivationFunction activationFunction = ActivationFunctions.Sigmoid;
 
     private final int in;
     private final int out;
