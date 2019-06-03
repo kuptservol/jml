@@ -21,6 +21,7 @@ public class Softmax implements ActivationFunction {
     }
 
     @Override
+    //todo: deal with 2-dim matrix here
     public double[] dADz(double[] z) {
         return new double[0];
     }

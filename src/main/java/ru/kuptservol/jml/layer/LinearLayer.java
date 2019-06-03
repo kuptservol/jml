@@ -82,6 +82,7 @@ public class LinearLayer implements Layer {
 
     @Override
     public double[] forward(double[] inputActivations) {
+        // todo: if dropout and test - multiply weights 1/(dropout probability) times each activation
         prevLayerActivations = inputActivations;
 
         /* z = Wx + b
