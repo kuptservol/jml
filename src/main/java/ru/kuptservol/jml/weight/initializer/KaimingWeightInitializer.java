@@ -6,16 +6,16 @@ import ru.kuptservol.jml.matrix.M;
 
 /**
  * @author Sergey Kuptsov
- * makes initials weights mean and std to be close to 0 - so sigmoid not saturates
+ * makes initials weights mean and std to be close to 0 for RELU activations
  */
-public class SharpGaussianWeightInitializer implements WeightInitializer {
+public class KaimingWeightInitializer implements WeightInitializer {
 
     private final Random random = new Random();
 
     @Override
     public double[][] initWeights(int x, int y) {
         double[][] vals = new double[x][y];
-        final double divisor = 1 / Math.sqrt(x);
+        final double divisor = Math.sqrt(2.0 / x);
 
         return M.FR(v -> divisor * random.nextGaussian(), vals);
     }

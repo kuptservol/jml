@@ -20,4 +20,5 @@ dependencies {
     compile "org.slf4j:slf4j-api:1.7.7"
     compile "org.slf4j:slf4j-simple:1.7.7"
     compile "org.knowm.xchart:xchart:3.5.2"
+    compile "org.jblas:jblas:1.2.4"
 }

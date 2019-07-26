@@ -10,4 +10,6 @@ public class WeightInitializers {
     }
 
     public static SharpGaussianWeightInitializer SharpGaussian = new SharpGaussianWeightInitializer();
+
+    public static KaimingWeightInitializer Kaiming = new KaimingWeightInitializer();
 }

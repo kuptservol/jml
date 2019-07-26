@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Sergey Kuptsov
@@ -25,6 +26,42 @@ public class MTest {
         double[] c = {6, 15, 24, 33};
 
         assertEquals(Arrays.toString(M.dotR(a, b)), Arrays.toString(c));
+    }
+
+    @Test
+    public void mean() {
+        double[][] a = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+
+        assertEquals(M.mean(a), 5.0, 0.0);
+    }
+
+    @Test
+    public void std() {
+        double[][] a = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+
+        assertEquals(7.74, M.std(a), 0.01);
+    }
+
+    @Test
+    public void normalize() {
+        double[][] a = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+
+        a = M.normalizeR(a);
+
+        assertTrue(1 - M.std(a) < 1);
+        assertTrue(M.mean(a) < 1);
     }
 
     @Test

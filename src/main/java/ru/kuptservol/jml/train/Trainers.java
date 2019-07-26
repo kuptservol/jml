@@ -8,6 +8,7 @@ public class Trainers {
     public static SGD.SGDBuilder SGD(int batchSize, int epochs) {
         return new SGD.SGDBuilder()
                 .batchSize(batchSize)
+                .normalize(false)
                 .epochs(epochs);
     }
 

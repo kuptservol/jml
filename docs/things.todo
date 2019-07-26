@@ -1,0 +1,14 @@
+ - fix softmax grad (get idea from pytorch)
+ - fix convolutional layer
+ - add lr_finder (https://sgugger.github.io/how-do-you-find-a-good-learning-rate.html)
+ - add 1cycle (https://sgugger.github.io/the-1cycle-policy.html)
+ - add tensor impl (tensorflow or pytorch style)
+
+ check:
+ - normalization
+ - kaiming init
+ - relu as layer
+ - derivatives to auto diff calculus tensor
+ - move calculus to bigdecimal
+ - refactor to pytorch style models
+

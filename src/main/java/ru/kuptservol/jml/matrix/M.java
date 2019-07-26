@@ -10,8 +10,50 @@ import static java.lang.Double.POSITIVE_INFINITY;
 
 /**
  * @author Sergey Kuptsov
+ * Matrix math
  */
 public class M {
+
+    public static double mean(double[][] a) {
+        double mean = 0;
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
+                mean += a[i][j];
+            }
+        }
+
+        return mean / (a.length * a[0].length);
+    }
+
+    public static double std(double[][] a) {
+        double mean = mean(a);
+        double std = 0;
+
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
+                double diff = a[i][j] - mean;
+                std += diff * diff;
+            }
+        }
+
+        return Math.sqrt(std);
+    }
+
+    public static double[][] normalizeR(double[][] a, double mean, double std) {
+        double[][] res = new double[a.length][a[0].length];
+
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
+                res[i][j] = (a[i][j] - mean) / std;
+            }
+        }
+
+        return res;
+    }
+
+    public static double[][] normalizeR(double[][] a) {
+        return normalizeR(a, mean(a), std(a));
+    }
 
     public static double[][] dotR(double[][] a, double[][] b) {
         int aRows = a.length;

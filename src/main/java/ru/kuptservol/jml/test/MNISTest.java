@@ -229,7 +229,7 @@ public class MNISTest {
         DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
 
         PlotGraphResultHandler graph = PlotGraphResultHandler
-                .cons(Paths.get("./graph/learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_rmsprop_0_9"));
+                .cons(Paths.get("./graph/test"));
 
         Model model = Models.linear(
                 Models.LinearModelBuilder.builder()
@@ -255,7 +255,7 @@ public class MNISTest {
         DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
 
         PlotGraphResultHandler graph = PlotGraphResultHandler
-                .cons(Paths.get("./graph/learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_rmsprop_0_9"));
+                .cons(Paths.get("./graph/learn_mse_100_neurons_l2_reg_early_stop_sharp_weight_init_with_adam_0_9_0_9"));
 
         Model model = Models.linear(
                 Models.LinearModelBuilder.builder()
@@ -268,6 +268,32 @@ public class MNISTest {
                 .resultF(OutputFunctions.MaxIndex)
                 .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
                 .costFunction(CostFunctions.MSE.resultHandler(ResultHandlers.Empty).build())
+                .metrics(Metrics.Accuracy.build())
+                .metricResultHandler(ResultHandlers.GraphAndLog(graph))
+                .regularization(Optimizations.L2Reg(5))
+                .build();
+
+        model.train(mnist);
+    }
+
+    @Test
+    public void test() throws IOException {
+        DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
+
+        PlotGraphResultHandler graph = PlotGraphResultHandler
+                .cons(Paths.get("./graph/test"));
+
+        Model model = Models.linear(
+                Models.LinearModelBuilder.builder()
+                        .learningRate(0.01)
+                        .weightInitializer(WeightInitializers.SharpGaussian)
+                        .optimizer(Optimizers.Adam(0.9, 0.9))
+                        .build(),
+                784, 100, 10)
+                .trainer(Trainers.SGD(100, 100).build())
+                .resultF(OutputFunctions.MaxIndex)
+                .earlyStopO(Optional.of(Optimizations.EarlyStopping(5)))
+                .costFunction(CostFunctions.CrossEntropy.resultHandler(ResultHandlers.Empty).build())
                 .metrics(Metrics.Accuracy.build())
                 .metricResultHandler(ResultHandlers.GraphAndLog(graph))
                 .regularization(Optimizations.L2Reg(5))

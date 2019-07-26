@@ -29,11 +29,18 @@ public class SGD implements Trainer {
     private long epochs = 30;
     @Builder.Default
     private long parallelization = 1;
+    @Builder.Default
+    private boolean normalize = false;
 
     @Override
     public void train(Model m, DataSet dataSet) {
+        if (normalize) {
+            normalize(dataSet);
+        }
+
         double[][] trainX = dataSet.train.x;
         double[][] trainY = dataSet.train.y;
+
         m.trainListener.onTrainStarted();
 
         Iterator<Double> learningRates = m.adaptiveLearningRate.learningRates();
@@ -61,6 +68,16 @@ public class SGD implements Trainer {
             }
         }
         m.trainListener.onTrainFinished(m);
+    }
+
+    private void normalize(DataSet dataSet) {
+        double trainXMean = M.mean(dataSet.train.x);
+        double trainXStd = M.std(dataSet.train.x);
+
+        dataSet.train.x = M.normalizeR(dataSet.train.x, trainXMean, trainXStd);
+
+        dataSet.validation.ifPresent(data -> dataSet.validation.get().x = M.normalizeR(data.x, trainXMean, trainXStd));
+        dataSet.test.ifPresent(data -> dataSet.test.get().x = M.normalizeR(data.x, trainXMean, trainXStd));
     }
 
     private void trainOnMiniBatch(M.Data trainMiniBatch, Model m, int batchId) {
