@@ -10,7 +10,7 @@ import ru.kuptservol.jml.v2.SimpleModel;
 public class SimpleModelTest {
 
     @Test
-    public void test() {
+    public void gradsCheck() {
         Tensor W1 = Tensor.tensor(new double[][]{
                 {0.1, 0.2, 0.3},
                 {0.4, 0.5, 0.6},

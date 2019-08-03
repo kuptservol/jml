@@ -9,8 +9,8 @@ public class Linear implements Layer{
 
     private Tensor inp;
     private Tensor out;
-    private final Tensor W;
-    private final Tensor b;
+    final Tensor W;
+    final Tensor b;
 
     public Linear(Tensor w, Tensor b) {
         this.W = w;

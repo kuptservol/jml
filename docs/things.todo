@@ -5,10 +5,6 @@
  - add tensor impl (tensorflow or pytorch style)
 
  check:
- - normalization
- - kaiming init
- - relu as layer
  - derivatives to auto diff calculus tensor
- - move calculus to bigdecimal
- - refactor to pytorch style models
+ - try to represent loss functions as tensor op
 

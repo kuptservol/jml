@@ -4,12 +4,12 @@ import ru.kuptservol.jml.tensor.Tensor;
 
 /**
  * @author Sergey Kuptsov
- * makes initials weights mean and std to be close to 0 for RELU activations
+ * Initialize weights so mean=0 and std=1 keeps after multiple relu(a @ x) operations
  */
 public class Kaiming implements WeightInitializer {
 
     @Override
     public Tensor init(int... shape) {
-        return Tensor.rand(shape).mul(Math.sqrt(2. / shape[0]));
+        return Tensor.randn(shape).mul(Math.sqrt(2. / shape[0]));
     }
 }

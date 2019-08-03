@@ -1,4 +1,7 @@
 ##### Weight Initializers
+We want weights to be 
+neither big - cause multiple operations will lead out to Nan
+nor small - cause multiple operations will lead out to 0
 ```java
 public interface WeightInitializer extends Serializable {
     double[][] init(int x, int y);

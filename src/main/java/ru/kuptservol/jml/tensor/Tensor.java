@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * @author Sergey Kuptsov
@@ -33,6 +34,10 @@ public class Tensor {
         }
     }
 
+    public Tensor getRange(int from, int to) {
+        return new Tensor(matrix.getRange(from, to));
+    }
+
     public static Tensor tensor(double[][] matrix) {
         return new Tensor(new DoubleMatrix(matrix));
     }
@@ -49,16 +54,20 @@ public class Tensor {
         return new Tensor(new DoubleMatrix(1, 1, scalar));
     }
 
-    public static Tensor rand(int... shape) {
+    public static Tensor randn(int... shape) {
         if (shape.length == 1) {
-            return new Tensor(DoubleMatrix.rand(shape[0]));
+            return new Tensor(DoubleMatrix.randn(1, shape[0]));
         } else {
-            return new Tensor(DoubleMatrix.rand(shape[0], shape[1]));
+            return new Tensor(DoubleMatrix.randn(shape[0], shape[1]));
         }
     }
 
     public Tensor mmul(Tensor t) {
         return new Tensor(matrix.mmul(t.matrix));
+    }
+
+    public Tensor exp() {
+        return new Tensor(MatrixFunctions.exp(matrix.dup()));
     }
 
     public Tensor mul(Tensor t) {
@@ -81,6 +90,27 @@ public class Tensor {
         return new Tensor(matrix.sub(t.matrix));
     }
 
+    public Tensor broadcast(Tensor to) {
+        if (to.matrix.columns > matrix.columns && to.matrix.rows == matrix.rows) {
+            DoubleMatrix broadcasted = new DoubleMatrix(matrix.rows, to.matrix.columns);
+            for (int row = 0; row < matrix.rows; row++) {
+                int brColumnI = 0;
+                for (int column = 0; column < to.matrix.columns; column++) {
+                    broadcasted.put(row, column, matrix.get(row, brColumnI));
+                    if (brColumnI == matrix.columns - 1) {
+                        brColumnI = 0;
+                    } else {
+                        brColumnI++;
+                    }
+                }
+            }
+
+            return new Tensor(broadcasted);
+        }
+
+        return this;
+    }
+
     public Tensor pow(double grade) {
         return new Tensor(MatrixFunctions.pow(matrix, grade));
     }
@@ -91,6 +121,58 @@ public class Tensor {
 
     public Tensor mean() {
         return Tensor.tensor(matrix.mean());
+    }
+
+    public Tensor sum() {
+        return Tensor.tensor(matrix.sum());
+    }
+
+    public Tensor sum(int dim) {
+        if (dim == 0) {
+            return sum();
+        } else if (dim == 1) {
+            DoubleMatrix maxByRows = new DoubleMatrix(matrix.rows, 1);
+
+            for (int i = 0; i < matrix.rows; i++) {
+                maxByRows.put(i, 0, matrix.getRow(i).sum());
+            }
+
+            return new Tensor(maxByRows);
+        } else {
+            throw new NotImplementedException();
+        }
+    }
+
+    public Tensor log() {
+        return new Tensor(MatrixFunctions.log(matrix));
+    }
+
+    public Tensor neg() {
+        return new Tensor(matrix.neg());
+    }
+
+    public Tensor max() {
+        return Tensor.tensor(matrix.max());
+    }
+
+    public Tensor max(int dim) {
+        if (dim == 0) {
+            return Tensor.tensor(matrix.max());
+        } else if (dim == 1) {
+            DoubleMatrix maxByRows = new DoubleMatrix(matrix.rows, 1);
+
+            for (int i = 0; i < matrix.rows; i++) {
+                maxByRows.put(i, 0, matrix.getRow(i).max());
+            }
+
+            return new Tensor(maxByRows);
+        } else {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    public double sumD() {
+        return matrix.sum();
     }
 
     public double std() {
@@ -104,7 +186,7 @@ public class Tensor {
             }
         }
 
-        return Math.sqrt(std);
+        return Math.sqrt(std / (matrix.rows * matrix.columns));
     }
 
     public Tensor clamp_min(double val) {
@@ -118,6 +200,11 @@ public class Tensor {
         }
 
         return new Tensor(matrix_new);
+    }
+
+    public Tensor minusi(Tensor val) {
+        matrix.subi(val.matrix);
+        return this;
     }
 
     @Override
@@ -155,5 +242,9 @@ public class Tensor {
 
     public Tensor div(double val) {
         return new Tensor(matrix.div(val));
+    }
+
+    public Tensor div(Tensor val) {
+        return new Tensor(matrix.div(val.matrix));
     }
 }
