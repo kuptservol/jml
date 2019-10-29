@@ -34,8 +34,8 @@ public class Tensor {
         }
     }
 
-    public Tensor getRange(int from, int to) {
-        return new Tensor(matrix.getRange(from, to));
+    public Tensor getRowRange(int from, int to) {
+        return new Tensor(matrix.getRange(from, to, 0, matrix.columns));
     }
 
     public static Tensor tensor(double[][] matrix) {

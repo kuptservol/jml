@@ -23,12 +23,15 @@ public class SGDTest {
     public void test() throws IOException {
         DataSet mnist = DataSets.MNIST(Paths.get("/opt/jml/mnist"));
 
-        Tensor x = Tensor.tensor(mnist.train.x);
+        Tensor x_train = Tensor.tensor(mnist.train.x);
         Tensor y = Tensor.tensor(mnist.train.y);
+
+        System.out.println(x_train.mean());
+        System.out.println(x_train.mean());
 
         Model model = new SimpleModel();
 
-        SGD sgd = new SGD(x, y, model);
+        SGD sgd = new SGD(x_train, y, model);
 
         sgd.fit();
     }

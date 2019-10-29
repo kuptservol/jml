@@ -33,8 +33,8 @@ public class SGD {
                 int to = from + batchSize;
 
                 to = to > X.shape[0] - 1 ? X.shape[0] - 1 : to;
-                Tensor X_batch = X.getRange(from, to);
-                Tensor Y_batch = Y.getRange(from, to);
+                Tensor X_batch = X.getRowRange(from, to);
+                Tensor Y_batch = Y.getRowRange(from, to);
 
                 loss = lossF.forward(model.forward(X_batch), Y_batch);
                 lossF.backward();

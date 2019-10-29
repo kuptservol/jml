@@ -27,4 +27,8 @@ public class Assertions {
             throw new AssertionError("Differs " + one + " and " + two);
         }
     }
+
+    public static void assertNearZero(double val) {
+        assertNear(val, 0, 0.001);
+    }
 }
